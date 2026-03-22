@@ -15,7 +15,8 @@ import {
   Star, 
   ShoppingBag,
   Menu as MenuIcon,
-  X
+  X,
+  Leaf
 } from 'lucide-react';
 
 // --- Types ---
@@ -23,10 +24,15 @@ interface MenuItem {
   id: string;
   name: string;
   ingredients: string;
-  price: number;
-  category: 'classique' | 'speciale' | 'vegetarienne' | 'dessert' | 'boisson' | 'menu';
+  prices: {
+    t1?: number; // Petite
+    t2?: number; // Moyenne
+    t3?: number; // Grande
+  };
+  category: 'classique' | 'speciale' | 'vegetarienne' | 'dessert' | 'boisson' | 'menu' | 'panini' | 'lasagne';
   image: string;
   popular?: boolean;
+  isVeggie?: boolean;
 }
 
 // --- Constants ---
@@ -35,15 +41,17 @@ const MENU_ITEMS: MenuItem[] = [
     id: '1', 
     name: '4 Fromages', 
     ingredients: 'chèvre, roquefort, mozzarella, emmental, olives, origan', 
-    price: 10.50, 
+    prices: { t1: 10.50, t2: 12.50, t3: 14.50 }, 
     category: 'classique',
-    image: 'images-produit/pizza/4-Fromages.png'
+    image: 'images-produit/pizza/4-Fromages.png',
+    popular: true,
+    isVeggie: true
   },
   { 
     id: '2', 
     name: 'Poularde', 
     ingredients: 'pommes de terre, poulet, oignons, oeuf, fromages, olives, origan', 
-    price: 10.50, 
+    prices: { t1: 10.50, t2: 12.50, t3: 14.50 }, 
     category: 'speciale',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -51,7 +59,7 @@ const MENU_ITEMS: MenuItem[] = [
     id: '3', 
     name: 'Kebab', 
     ingredients: 'poivrons, oignons, viande à kebab, fromages, olives, origan, sauce blanche', 
-    price: 11.00, 
+    prices: { t1: 11.00, t2: 13.00, t3: 15.00 }, 
     category: 'speciale',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -59,7 +67,7 @@ const MENU_ITEMS: MenuItem[] = [
     id: '4', 
     name: 'Texane', 
     ingredients: 'merguez, chorizo, poulet, viande hachée, oignons rouges, fromages, olives, origan', 
-    price: 11.00, 
+    prices: { t1: 11.00, t2: 13.00, t3: 15.00 }, 
     category: 'speciale',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -67,7 +75,7 @@ const MENU_ITEMS: MenuItem[] = [
     id: '5', 
     name: 'Pepperoni', 
     ingredients: 'pepperoni, viande hachée, fromages, oeuf, olives, origan', 
-    price: 11.80, 
+    prices: { t1: 11.80, t2: 13.80, t3: 15.80 }, 
     category: 'speciale',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -75,7 +83,7 @@ const MENU_ITEMS: MenuItem[] = [
     id: '6', 
     name: 'Charentaise', 
     ingredients: 'jambon, oignons, champignons, poitrine fumée, crème fraiche, persillade, fromages, olives, origan', 
-    price: 11.80, 
+    prices: { t1: 11.80, t2: 13.80, t3: 15.80 }, 
     category: 'speciale',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -83,7 +91,7 @@ const MENU_ITEMS: MenuItem[] = [
     id: '7', 
     name: 'Barbecue', 
     ingredients: 'viande hachée, cheddar, tomates fraîches, salade, oignons rouges, fromages, olives, origan, sauce barbecue', 
-    price: 11.80, 
+    prices: { t1: 11.80, t2: 13.80, t3: 15.80 }, 
     category: 'speciale',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -91,7 +99,7 @@ const MENU_ITEMS: MenuItem[] = [
     id: '8', 
     name: 'Orientale', 
     ingredients: 'champignons, merguez, oignons, poivrons, viande hachée, fromages, olives, origan', 
-    price: 11.00, 
+    prices: { t1: 11.00, t2: 13.00, t3: 15.00 }, 
     category: 'speciale',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -99,15 +107,16 @@ const MENU_ITEMS: MenuItem[] = [
     id: '9', 
     name: 'Margarita', 
     ingredients: 'fromages, olives, origan', 
-    price: 7.50, 
+    prices: { t1: 7.50, t2: 9.50, t3: 11.50 }, 
     category: 'classique',
-    image: 'images-produit/pizza/Margherita.png'
+    image: 'images-produit/pizza/Margherita.png',
+    isVeggie: true
   },
   { 
     id: '10', 
     name: 'Bambini', 
     ingredients: 'jambon, fromages, olives, origan', 
-    price: 8.50, 
+    prices: { t1: 8.50, t2: 10.50, t3: 12.50 }, 
     category: 'classique',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -115,15 +124,16 @@ const MENU_ITEMS: MenuItem[] = [
     id: '11', 
     name: 'Reine', 
     ingredients: 'jambon, champignons, fromages, olives, origan', 
-    price: 9.00, 
+    prices: { t1: 9.00, t2: 11.00, t3: 13.00 }, 
     category: 'classique',
-    image: 'images-produit/pizza/Reine.png'
+    image: 'images-produit/pizza/Reine.png',
+    popular: true
   },
   { 
     id: '12', 
     name: 'Roquefort', 
     ingredients: 'oignons, roquefort, crème fraiche, lardons, fromages, olives, origan', 
-    price: 9.50, 
+    prices: { t1: 9.50, t2: 11.50, t3: 13.50 }, 
     category: 'classique',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -131,7 +141,7 @@ const MENU_ITEMS: MenuItem[] = [
     id: '13', 
     name: 'Romaine', 
     ingredients: "oignons, filets d'anchois, câpres, poivrons, fromages, olives, origan", 
-    price: 9.50, 
+    prices: { t1: 9.50, t2: 11.50, t3: 13.50 }, 
     category: 'classique',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -139,7 +149,7 @@ const MENU_ITEMS: MenuItem[] = [
     id: '14', 
     name: 'Apache', 
     ingredients: 'oignons, poulet, crème fraiche, curry, fromages, olives, origan', 
-    price: 9.50, 
+    prices: { t1: 9.50, t2: 11.50, t3: 13.50 }, 
     category: 'speciale',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -147,7 +157,7 @@ const MENU_ITEMS: MenuItem[] = [
     id: '15', 
     name: 'Mixte', 
     ingredients: 'ananas, poulet, crème fraîche, curry, fromages, olives, origan', 
-    price: 9.50, 
+    prices: { t1: 9.50, t2: 11.50, t3: 13.50 }, 
     category: 'speciale',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -155,7 +165,7 @@ const MENU_ITEMS: MenuItem[] = [
     id: '16', 
     name: 'Vendéenne', 
     ingredients: 'jambon de pays, oignons, crème fraîche, fromages, olives, origan', 
-    price: 9.50, 
+    prices: { t1: 9.50, t2: 11.50, t3: 13.50 }, 
     category: 'classique',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -163,23 +173,25 @@ const MENU_ITEMS: MenuItem[] = [
     id: '17', 
     name: 'Chevrette', 
     ingredients: 'chèvre, crème fraiche, fromages, olives, origan', 
-    price: 9.50, 
+    prices: { t1: 9.50, t2: 11.50, t3: 13.50 }, 
     category: 'classique',
-    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
+    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800',
+    isVeggie: true
   },
   { 
     id: '18', 
     name: 'Végétarienne', 
     ingredients: 'oignons, poivrons, champignons, fromages, olives, origan', 
-    price: 9.50, 
+    prices: { t1: 9.50, t2: 11.50, t3: 13.50 }, 
     category: 'vegetarienne',
-    image: 'images-produit/pizza/Vegetarienne.png'
+    image: 'images-produit/pizza/Vegetarienne.png',
+    isVeggie: true
   },
   { 
     id: '19', 
     name: 'Norvégienne', 
     ingredients: 'saumon fumé, crème fraîche, fromages, olives, origan', 
-    price: 10.50, 
+    prices: { t1: 10.50, t2: 12.50, t3: 14.50 }, 
     category: 'speciale',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -187,7 +199,7 @@ const MENU_ITEMS: MenuItem[] = [
     id: '20', 
     name: 'Bolognaise', 
     ingredients: 'viande de boeuf hachée cuisinée, fromages, olives, origan', 
-    price: 10.50, 
+    prices: { t1: 10.50, t2: 12.50, t3: 14.50 }, 
     category: 'classique',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -195,7 +207,7 @@ const MENU_ITEMS: MenuItem[] = [
     id: '21', 
     name: 'Magret', 
     ingredients: 'magret, champignons, poivre vert, fromages, olives, origan', 
-    price: 10.50, 
+    prices: { t1: 10.50, t2: 12.50, t3: 14.50 }, 
     category: 'speciale',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -203,7 +215,7 @@ const MENU_ITEMS: MenuItem[] = [
     id: '22', 
     name: 'Salaison', 
     ingredients: 'merguez, jambon, lardons, chorizo, fromages, olives, origan', 
-    price: 10.50, 
+    prices: { t1: 10.50, t2: 12.50, t3: 14.50 }, 
     category: 'speciale',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -211,15 +223,16 @@ const MENU_ITEMS: MenuItem[] = [
     id: '23', 
     name: 'Champêtre', 
     ingredients: 'mozzarella, poivrons, chèvre, pesto, olives, origan', 
-    price: 10.50, 
+    prices: { t1: 10.50, t2: 12.50, t3: 14.50 }, 
     category: 'vegetarienne',
-    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
+    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800',
+    isVeggie: true
   },
   { 
     id: '24', 
     name: 'Speciale', 
     ingredients: 'jambon, oignons, oeuf, poivrons, champignons, fromages, olives, origan', 
-    price: 10.50, 
+    prices: { t1: 10.50, t2: 12.50, t3: 14.50 }, 
     category: 'speciale',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -227,7 +240,7 @@ const MENU_ITEMS: MenuItem[] = [
     id: '25', 
     name: 'La Pallice', 
     ingredients: 'jambon, gésiers, champignons, chèvre, fromages, olives, origan', 
-    price: 10.50, 
+    prices: { t1: 10.50, t2: 12.50, t3: 14.50 }, 
     category: 'speciale',
     image: 'images-produit/pizza/La-Pallice.png'
   },
@@ -235,15 +248,16 @@ const MENU_ITEMS: MenuItem[] = [
     id: '26', 
     name: 'Campagnarde', 
     ingredients: 'oignons, champignons, lardons, jambon, fromages, oeuf, olives, origan', 
-    price: 10.50, 
+    prices: { t1: 10.50, t2: 12.50, t3: 14.50 }, 
     category: 'classique',
-    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
+    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800',
+    popular: true
   },
   { 
     id: '27', 
     name: 'Delicieuse', 
     ingredients: 'oignons, poulet, poivrons, chorizo, crème fraiche, fromages, olives, origan', 
-    price: 10.50, 
+    prices: { t1: 10.50, t2: 12.50, t3: 14.50 }, 
     category: 'speciale',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -251,7 +265,7 @@ const MENU_ITEMS: MenuItem[] = [
     id: '28', 
     name: 'Parma', 
     ingredients: 'jambon de parme, tomates confites, parmesan, pesto, fromages, olives, origan', 
-    price: 11.80, 
+    prices: { t1: 11.80, t2: 13.80, t3: 15.80 }, 
     category: 'speciale',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -259,7 +273,7 @@ const MENU_ITEMS: MenuItem[] = [
     id: '29', 
     name: 'Cesar', 
     ingredients: 'tenders de poulet, tomates confites, parmesan, salade, fromages, olives, origan, sauce césar', 
-    price: 11.80, 
+    prices: { t1: 11.80, t2: 13.80, t3: 15.80 }, 
     category: 'speciale',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -267,7 +281,7 @@ const MENU_ITEMS: MenuItem[] = [
     id: '30', 
     name: 'Savoureuse', 
     ingredients: 'champignons, gésiers, magret fumé, foie gras, noix, salade, fromages, origan, vinaigre de framboise', 
-    price: 13.00, 
+    prices: { t1: 13.00, t2: 15.00, t3: 17.00 }, 
     category: 'speciale',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -275,15 +289,16 @@ const MENU_ITEMS: MenuItem[] = [
     id: '31', 
     name: '6 Fromages', 
     ingredients: 'chèvre, cheddar, reblochon, emmental, roquefort, mozzarella, olives, origan', 
-    price: 11.80, 
+    prices: { t1: 11.80, t2: 13.80, t3: 15.80 }, 
     category: 'classique',
-    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
+    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800',
+    isVeggie: true
   },
   { 
     id: '32', 
     name: 'Saumon', 
     ingredients: 'pommes de terre, saumon, persillade, fromages, olives, origan', 
-    price: 11.80, 
+    prices: { t1: 11.80, t2: 13.80, t3: 15.80 }, 
     category: 'speciale',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -291,7 +306,7 @@ const MENU_ITEMS: MenuItem[] = [
     id: '33', 
     name: 'Montagnarde', 
     ingredients: 'jambon de pays, pommes de terre, coppa, jambon, raclette, fromages, olives, origan', 
-    price: 11.80, 
+    prices: { t1: 11.80, t2: 13.80, t3: 15.80 }, 
     category: 'classique',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -299,15 +314,16 @@ const MENU_ITEMS: MenuItem[] = [
     id: '34', 
     name: 'Burger', 
     ingredients: 'viande hachée, cheddar, tomates fraîches, salade, oignons, fromages, olives, origan, sauce burger', 
-    price: 11.80, 
+    prices: { t1: 11.80, t2: 13.80, t3: 15.80 }, 
     category: 'speciale',
-    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
+    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800',
+    popular: true
   },
   { 
     id: '35', 
     name: 'Maya', 
     ingredients: 'lardons, tomates confites, chèvre, fromages, olives, origan, miel', 
-    price: 11.80, 
+    prices: { t1: 11.80, t2: 13.80, t3: 15.80 }, 
     category: 'speciale',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -315,7 +331,7 @@ const MENU_ITEMS: MenuItem[] = [
     id: '36', 
     name: 'Forestière', 
     ingredients: "moutarde à l'ancienne, poulet, champignons, fromages, olives, origan", 
-    price: 11.80, 
+    prices: { t1: 11.80, t2: 13.80, t3: 15.80 }, 
     category: 'speciale',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -323,7 +339,7 @@ const MENU_ITEMS: MenuItem[] = [
     id: '37', 
     name: 'Cannibale', 
     ingredients: 'pommes de terre, poulet, viande hachée, kebab, lardons, chorizo, fromages, olives, origan, sauce samouraï', 
-    price: 11.80, 
+    prices: { t1: 11.80, t2: 13.80, t3: 15.80 }, 
     category: 'speciale',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -331,7 +347,7 @@ const MENU_ITEMS: MenuItem[] = [
     id: '38', 
     name: 'Chicken', 
     ingredients: 'tenders de poulet, tomates fraiches, cheddar, salade, oignons rouges, fromages, olives, origan, sauce pomme frite', 
-    price: 11.80, 
+    prices: { t1: 11.80, t2: 13.80, t3: 15.80 }, 
     category: 'speciale',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -339,129 +355,191 @@ const MENU_ITEMS: MenuItem[] = [
     id: '39', 
     name: 'Chevre Miel', 
     ingredients: 'chèvre, miel, noix, fromages, olives, origan', 
-    price: 10.50, 
+    prices: { t1: 10.50, t2: 12.50, t3: 14.50 }, 
     category: 'speciale',
-    image: 'images-produit/pizza/Chèvre-Miel.png'
+    image: 'images-produit/pizza/Chèvre-Miel.png',
+    isVeggie: true
   },
   { 
     id: '40', 
     name: 'Savoyarde', 
     ingredients: 'pommes de terre, lardons, reblochon, fromages, origan', 
-    price: 10.50, 
+    prices: { t1: 10.50, t2: 12.50, t3: 14.50 }, 
     category: 'classique',
-    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
+    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800',
+    popular: true
   },
   { 
     id: '41', 
-    name: 'Pizza Nutella', 
-    ingredients: 'Pâte à pizza, Nutella', 
-    price: 6.00, 
-    category: 'dessert',
-    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
+    name: 'Océane', 
+    ingredients: 'fruits de mer, ail, persillade, fromages, olives, origan', 
+    prices: { t1: 11.50, t2: 13.50, t3: 15.50 }, 
+    category: 'speciale',
+    image: 'images-produit/pizza/Oceane.png'
   },
   { 
     id: '42', 
+    name: 'Calzone', 
+    ingredients: 'jambon, champignons, oeuf, fromages, olives, origan', 
+    prices: { t1: 10.50, t2: 12.50, t3: 14.50 }, 
+    category: 'speciale',
+    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
+  },
+  // --- PANINIS (6.00€) ---
+  { 
+    id: 'p1', 
+    name: 'Panini Classique', 
+    ingredients: 'Jambon ou Chorizo ou Viande hachée, fromages', 
+    prices: { t1: 6.00 }, 
+    category: 'panini',
+    image: 'https://images.unsplash.com/photo-1520174691701-bc555a3404ca?auto=format&fit=crop&q=80&w=800'
+  },
+  { 
+    id: 'p2', 
+    name: 'Panini Curry', 
+    ingredients: 'Sauce tomate, poulet, curry, fromages', 
+    prices: { t1: 6.00 }, 
+    category: 'panini',
+    image: 'https://images.unsplash.com/photo-1520174691701-bc555a3404ca?auto=format&fit=crop&q=80&w=800'
+  },
+  { 
+    id: 'p3', 
+    name: 'Panini 4 Fromages', 
+    ingredients: 'Roquefort, chèvre, mozzarella, emmental', 
+    prices: { t1: 6.00 }, 
+    category: 'panini',
+    image: 'https://images.unsplash.com/photo-1520174691701-bc555a3404ca?auto=format&fit=crop&q=80&w=800'
+  },
+  { 
+    id: 'p4', 
+    name: 'Panini Saumon', 
+    ingredients: 'Saumon fumé, crème fraiche, fromages', 
+    prices: { t1: 6.00 }, 
+    category: 'panini',
+    image: 'https://images.unsplash.com/photo-1520174691701-bc555a3404ca?auto=format&fit=crop&q=80&w=800'
+  },
+  { 
+    id: 'p5', 
+    name: 'Panini Pays', 
+    ingredients: 'Jambon de pays, chèvre, fromages', 
+    prices: { t1: 6.00 }, 
+    category: 'panini',
+    image: 'https://images.unsplash.com/photo-1520174691701-bc555a3404ca?auto=format&fit=crop&q=80&w=800'
+  },
+  { 
+    id: 'p6', 
+    name: 'Panini Kebab', 
+    ingredients: 'Kebab, poivrons, oignons, fromages', 
+    prices: { t1: 6.00 }, 
+    category: 'panini',
+    image: 'https://images.unsplash.com/photo-1520174691701-bc555a3404ca?auto=format&fit=crop&q=80&w=800'
+  },
+  // --- LASAGNES ---
+  { 
+    id: 'l1', 
+    name: 'Lasagnes Maison', 
+    ingredients: '1 part (8.50€) / À partir de 4 parts (7.00€ la part)', 
+    prices: { t1: 8.50 }, 
+    category: 'lasagne',
+    image: 'https://images.unsplash.com/photo-1574894709920-11b28e7367e3?auto=format&fit=crop&q=80&w=800'
+  },
+  // --- DESSERTS ---
+  { 
+    id: 'd1', 
+    name: 'Pizza Nutella Gourmande', 
+    ingredients: 'Ananas ou poires, amandes effilées', 
+    prices: { t1: 10.00 }, 
+    category: 'dessert',
+    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
+  },
+  { 
+    id: 'd2', 
+    name: 'Pizza Nutella', 
+    ingredients: 'Nutella fondant', 
+    prices: { t1: 8.00 }, 
+    category: 'dessert',
+    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
+  },
+  { 
+    id: 'd3', 
     name: 'Panini Nutella', 
-    ingredients: 'Pain panini, Nutella', 
-    price: 4.00, 
+    ingredients: 'Pain chaud au Nutella', 
+    prices: { t1: 5.50 }, 
     category: 'dessert',
-    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
+    image: 'https://images.unsplash.com/photo-1520174691701-bc555a3404ca?auto=format&fit=crop&q=80&w=800'
   },
   { 
-    id: '43', 
-    name: 'Tiramisu', 
-    ingredients: 'Dessert italien au café', 
-    price: 3.50, 
+    id: 'd4', 
+    name: 'Tiramisu Nubi', 
+    ingredients: 'Saveurs du moment', 
+    prices: { t1: 3.80 }, 
     category: 'dessert',
-    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
+    image: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?auto=format&fit=crop&q=80&w=800'
   },
   { 
-    id: '44', 
-    name: 'Tarte Daim', 
-    ingredients: 'Tarte au chocolat et éclats de Daim', 
-    price: 3.50, 
+    id: 'd5', 
+    name: 'Muffin', 
+    ingredients: 'Saveurs du moment', 
+    prices: { t1: 3.80 }, 
     category: 'dessert',
-    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
+    image: 'https://images.unsplash.com/photo-1583061298682-31e94fd8959d?auto=format&fit=crop&q=80&w=800'
   },
   { 
-    id: '45', 
-    name: 'Fondant Chocolat', 
-    ingredients: 'Gâteau au chocolat au cœur coulant', 
-    price: 3.50, 
+    id: 'd6', 
+    name: 'Glace Häagen-Dazs', 
+    ingredients: 'Saveurs du moment', 
+    prices: { t1: 3.80 }, 
     category: 'dessert',
-    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
+    image: 'https://images.unsplash.com/photo-1501443666811-2108b05c900c?auto=format&fit=crop&q=80&w=800'
   },
+  // --- BOISSONS ---
   { 
-    id: '46', 
-    name: 'Glace Häagen-Dazs (100ml)', 
-    ingredients: 'Pot de glace 100ml', 
-    price: 3.50, 
-    category: 'dessert',
-    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
-  },
-  { 
-    id: '47', 
-    name: 'Glace Häagen-Dazs (460ml)', 
-    ingredients: 'Pot de glace 460ml', 
-    price: 6.50, 
-    category: 'dessert',
-    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
-  },
-  { 
-    id: '48', 
+    id: 'b1', 
     name: 'Soda 33cl', 
-    ingredients: 'Canette 33cl', 
-    price: 2.00, 
+    ingredients: 'Coca, Coca cherry, Coca zéro, Oasis, Ice tea, Orangina', 
+    prices: { t1: 2.00 }, 
     category: 'boisson',
-    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
+    image: 'https://images.unsplash.com/photo-1622483767028-3f66f34a507c?auto=format&fit=crop&q=80&w=800'
   },
   { 
-    id: '49', 
-    name: 'Soda 1.5L', 
-    ingredients: 'Bouteille 1.5L', 
-    price: 3.50, 
+    id: 'b2', 
+    name: 'Soda Bouteille', 
+    ingredients: 'Coca, Fanta, Ice tea', 
+    prices: { t1: 4.00 }, 
     category: 'boisson',
-    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
+    image: 'https://images.unsplash.com/photo-1581006852262-e4307cf6283a?auto=format&fit=crop&q=80&w=800'
   },
   { 
-    id: '50', 
-    name: 'Bière Heineken 33cl', 
-    ingredients: 'Bière blonde 33cl', 
-    price: 2.50, 
+    id: 'b3', 
+    name: 'Bières Canettes', 
+    ingredients: 'Heineken, Desperados, etc.', 
+    prices: { t1: 2.50 }, 
     category: 'boisson',
-    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
+    image: 'https://images.unsplash.com/photo-1608270586620-248524c67de9?auto=format&fit=crop&q=80&w=800'
   },
   { 
-    id: '51', 
-    name: 'Bière Desperados 33cl', 
-    ingredients: 'Bière aromatisée 33cl', 
-    price: 3.00, 
+    id: 'b4', 
+    name: 'Bières Bouteilles', 
+    ingredients: 'Sélection artisanale', 
+    prices: { t1: 3.00 }, 
     category: 'boisson',
-    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
+    image: 'https://images.unsplash.com/photo-1535958636474-b021ee887b13?auto=format&fit=crop&q=80&w=800'
   },
   { 
-    id: '52', 
-    name: 'Vin Rosé 75cl', 
-    ingredients: 'Bouteille de vin rosé 75cl', 
-    price: 9.00, 
+    id: 'b5', 
+    name: 'Vins 75cl', 
+    ingredients: 'Lambrusco, Rosé, Bordeaux', 
+    prices: { t1: 12.00 }, 
     category: 'boisson',
-    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
+    image: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&q=80&w=800'
   },
   { 
-    id: '53', 
+    id: 'm1', 
     name: 'Menu Enfant', 
     ingredients: '1 petite pizza au choix + 1 compote + 1 Capri-Sun', 
-    price: 7.50, 
+    prices: { t1: 7.50 }, 
     category: 'menu',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
-  },
-  { 
-    id: '54', 
-    name: 'Océane', 
-    ingredients: 'fruits de mer, ail, persillade, fromages, olives, origan', 
-    price: 11.50, 
-    category: 'speciale',
-    image: 'images-produit/pizza/Oceane.png'
   },
 ];
 
@@ -470,6 +548,8 @@ const CATEGORIES = [
   { id: 'classique', label: 'Classiques' },
   { id: 'speciale', label: 'Spéciales' },
   { id: 'vegetarienne', label: 'Végé' },
+  { id: 'panini', label: 'Paninis' },
+  { id: 'lasagne', label: 'Lasagnes' },
   { id: 'dessert', label: 'Desserts' },
   { id: 'boisson', label: 'Boissons' },
   { id: 'menu', label: 'Menus' },
@@ -774,6 +854,82 @@ const Hero = () => {
   );
 };
 
+const MenuCard = ({ item }: { item: MenuItem }) => {
+  const [selectedSize, setSelectedSize] = useState<'t1' | 't2' | 't3'>('t2');
+
+  const hasMultipleSizes = item.prices.t2 || item.prices.t3;
+  const currentPrice = item.prices[selectedSize] || item.prices.t1 || 0;
+
+  return (
+    <div className="group relative flex flex-col h-full">
+      <div className="relative z-20 mb-[-4rem] px-4">
+        <div className="relative aspect-square w-full max-w-[280px] mx-auto">
+          <img 
+            src={item.image} 
+            alt={item.name}
+            className="w-full h-full object-cover rounded-full shadow-2xl border-[6px] border-white bg-zinc-100 transition-transform group-hover:scale-105"
+          />
+          {item.popular && (
+            <div className="absolute -top-2 -right-2 z-30 bg-brand-yellow text-brand-green text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-full shadow-2xl border-2 border-white transform rotate-12">
+              Best Seller
+            </div>
+          )}
+          {item.isVeggie && (
+            <div className="absolute top-0 left-0 z-30 bg-brand-green text-white p-2 rounded-full shadow-xl">
+              <Leaf size={16} />
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="bg-white pt-20 pb-8 px-8 rounded-[2.5rem] shadow-lg border border-zinc-100 flex flex-col h-full">
+        <div className="flex-grow text-center">
+          <h4 className="text-2xl font-serif font-bold text-zinc-900 mb-2">
+            {item.name}
+          </h4>
+          <p className="text-zinc-500 text-sm italic mb-6">
+            {item.ingredients}
+          </p>
+
+          {hasMultipleSizes && (
+            <div className="flex justify-center gap-2 mb-6">
+              {[
+                { id: 't1', label: 'Petite' },
+                { id: 't2', label: 'Moyenne' },
+                { id: 't3', label: 'Grande' }
+              ].map((size) => (
+                <button
+                  key={size.id}
+                  onClick={() => setSelectedSize(size.id as any)}
+                  className={`px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all ${
+                    selectedSize === size.id
+                      ? 'bg-brand-green text-white shadow-md'
+                      : 'bg-zinc-100 text-zinc-400 hover:bg-zinc-200'
+                  }`}
+                >
+                  {size.label}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+        
+        <div className="flex items-center justify-between pt-6 border-t border-zinc-50">
+          <div className="flex flex-col">
+            <span className="text-xs font-black text-zinc-400 uppercase tracking-widest mb-1">Prix</span>
+            <span className="text-2xl font-serif font-bold text-brand-green">
+              {currentPrice.toFixed(2)}€
+            </span>
+          </div>
+          <button className="bg-brand-green text-white px-6 py-3 rounded-2xl font-black text-sm hover:bg-brand-yellow hover:text-brand-green transition-all shadow-lg active:scale-95">
+            Commander
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const MenuSection = () => {
   const [activeCategory, setActiveCategory] = useState('all');
 
@@ -782,7 +938,7 @@ const MenuSection = () => {
     : MENU_ITEMS.filter(item => item.category === activeCategory);
 
   return (
-    <section id="menu" className="py-24 bg-white">
+    <section id="menu" className="py-24 bg-zinc-50/30">
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
           <div>
@@ -800,8 +956,8 @@ const MenuSection = () => {
                 onClick={() => setActiveCategory(cat.id)}
                 className={`px-6 py-2 rounded-full text-sm font-bold transition-all ${
                   activeCategory === cat.id 
-                    ? 'bg-brand-green text-white shadow-lg' 
-                    : 'bg-zinc-100 text-zinc-500 hover:bg-zinc-200'
+                    ? 'bg-brand-green text-white shadow-lg shadow-brand-green/20' 
+                    : 'bg-white text-zinc-500 hover:bg-zinc-50 border border-zinc-100'
                 }`}
               >
                 {cat.label}
@@ -810,47 +966,9 @@ const MenuSection = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-20 gap-x-12">
           {filteredItems.map((item) => (
-            <div key={item.id} className="group relative flex flex-col h-full">
-              <div className="relative z-20 mb-[-4rem] px-4">
-                <div className="relative aspect-square w-full max-w-[280px] mx-auto">
-                  <img 
-                    src={item.image} 
-                    alt={item.name}
-                    className="w-full h-full object-cover rounded-full shadow-2xl border-[6px] border-white bg-zinc-100"
-                  />
-                  {item.popular && (
-                    <div className="absolute -top-2 -right-2 z-30 bg-brand-yellow text-brand-green text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-full shadow-2xl border-2 border-white transform rotate-12">
-                      Best Seller
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              <div className="bg-white pt-20 pb-8 px-8 rounded-[2.5rem] shadow-lg border border-zinc-100 flex flex-col h-full">
-                <div className="flex-grow text-center">
-                  <h4 className="text-2xl font-serif font-bold text-zinc-900 mb-3">
-                    {item.name}
-                  </h4>
-                  <p className="text-zinc-500 text-sm italic">
-                    {item.ingredients}
-                  </p>
-                </div>
-                
-                <div className="flex items-center justify-between pt-6 border-t border-zinc-50">
-                  <div className="flex flex-col">
-                    <span className="text-xs font-black text-zinc-400 uppercase tracking-widest mb-1">Prix</span>
-                    <span className="text-2xl font-serif font-bold text-brand-green">
-                      {item.price.toFixed(2)}€
-                    </span>
-                  </div>
-                  <button className="bg-brand-green text-white px-6 py-3 rounded-2xl font-black text-sm hover:bg-brand-yellow hover:text-brand-green transition-all shadow-lg">
-                    Commander
-                  </button>
-                </div>
-              </div>
-            </div>
+            <MenuCard key={item.id} item={item} />
           ))}
         </div>
 
