@@ -752,12 +752,12 @@ const Hero = () => {
             Découvrez le goût authentique de La Pallice.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <button className="w-full sm:w-auto bg-brand-yellow text-brand-green px-10 py-4 rounded-full font-black text-lg hover:scale-105 transition-all shadow-2xl shadow-brand-yellow/40">
+            <a href="#menu" className="w-full sm:w-auto bg-brand-yellow text-brand-green px-10 py-4 rounded-full font-black text-lg hover:scale-105 transition-all shadow-2xl shadow-brand-yellow/40 text-center">
               Voir la Carte
-            </button>
-            <button className="w-full sm:w-auto bg-white/10 backdrop-blur-md text-white border border-white/20 px-10 py-4 rounded-full font-bold text-lg hover:bg-white/20 transition-all">
+            </a>
+            <a href="#distributeur" className="w-full sm:w-auto bg-white/10 backdrop-blur-md text-white border border-white/20 px-10 py-4 rounded-full font-bold text-lg hover:bg-white/20 transition-all text-center">
               Notre Distributeur
-            </button>
+            </a>
           </div>
         </motion.div>
       </div>
