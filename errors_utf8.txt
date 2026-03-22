@@ -1,0 +1,4 @@
+﻿src/App_github.tsx(971,23): error TS2322: Type '{ key: string; item: MenuItem; }' is not assignable to type '{ item: MenuItem; }'.
+  Property 'key' does not exist on type '{ item: MenuItem; }'.
+src/App_github_utf8.tsx(971,23): error TS2322: Type '{ key: string; item: MenuItem; }' is not assignable to type '{ item: MenuItem; }'.
+  Property 'key' does not exist on type '{ item: MenuItem; }'.
