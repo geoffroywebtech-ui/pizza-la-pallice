@@ -37,7 +37,7 @@ const MENU_ITEMS: MenuItem[] = [
     ingredients: 'chèvre, roquefort, mozzarella, emmental, olives, origan', 
     price: 10.50, 
     category: 'classique',
-    image: '/image%20produit/pizza/4-Fromages.png'
+    image: 'images-produit/pizza/4-Fromages.png'
   },
   { 
     id: '2', 
@@ -101,7 +101,7 @@ const MENU_ITEMS: MenuItem[] = [
     ingredients: 'fromages, olives, origan', 
     price: 7.50, 
     category: 'classique',
-    image: '/image%20produit/pizza/Margherita.png'
+    image: 'images-produit/pizza/Margherita.png'
   },
   { 
     id: '10', 
@@ -117,7 +117,7 @@ const MENU_ITEMS: MenuItem[] = [
     ingredients: 'jambon, champignons, fromages, olives, origan', 
     price: 9.00, 
     category: 'classique',
-    image: '/image%20produit/pizza/Reine.png'
+    image: 'images-produit/pizza/Reine.png'
   },
   { 
     id: '12', 
@@ -173,7 +173,7 @@ const MENU_ITEMS: MenuItem[] = [
     ingredients: 'oignons, poivrons, champignons, fromages, olives, origan', 
     price: 9.50, 
     category: 'vegetarienne',
-    image: '/image%20produit/pizza/Vegetarienne.png'
+    image: 'images-produit/pizza/Vegetarienne.png'
   },
   { 
     id: '19', 
@@ -229,7 +229,7 @@ const MENU_ITEMS: MenuItem[] = [
     ingredients: 'jambon, gésiers, champignons, chèvre, fromages, olives, origan', 
     price: 10.50, 
     category: 'speciale',
-    image: '/image%20produit/pizza/La-Pallice.png'
+    image: 'images-produit/pizza/La-Pallice.png'
   },
   { 
     id: '26', 
@@ -341,7 +341,7 @@ const MENU_ITEMS: MenuItem[] = [
     ingredients: 'chèvre, miel, noix, fromages, olives, origan', 
     price: 10.50, 
     category: 'speciale',
-    image: '/image%20produit/pizza/Chèvre-Miel.png'
+    image: 'images-produit/pizza/Chèvre-Miel.png'
   },
   { 
     id: '40', 
@@ -461,7 +461,7 @@ const MENU_ITEMS: MenuItem[] = [
     ingredients: 'fruits de mer, ail, persillade, fromages, olives, origan', 
     price: 11.50, 
     category: 'speciale',
-    image: '/image%20produit/pizza/Oceane.png'
+    image: 'images-produit/pizza/Oceane.png'
   },
 ];
 
