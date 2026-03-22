@@ -173,7 +173,7 @@ const MENU_ITEMS: MenuItem[] = [
     ingredients: 'oignons, poivrons, champignons, fromages, olives, origan', 
     price: 9.50, 
     category: 'vegetarienne',
-    image: '/image%20produit/pizza/Végétarienne.png'
+    image: '/image%20produit/pizza/Vegetarienne.png'
   },
   { 
     id: '19', 
@@ -454,6 +454,14 @@ const MENU_ITEMS: MenuItem[] = [
     price: 7.50, 
     category: 'menu',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
+  },
+  { 
+    id: '54', 
+    name: 'Océane', 
+    ingredients: 'fruits de mer, ail, persillade, fromages, olives, origan', 
+    price: 11.50, 
+    category: 'speciale',
+    image: '/image%20produit/pizza/Oceane.png'
   },
 ];
 
