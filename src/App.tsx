@@ -53,7 +53,7 @@ const MENU_ITEMS: MenuItem[] = [
     ingredients: 'pommes de terre, poulet, oignons, oeuf, fromages, olives, origan', 
     prices: { t1: 10.50, t2: 12.50, t3: 14.50 }, 
     category: 'speciale',
-    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
+    image: 'images-produit/pizza/Poularde.png'
   },
   { 
     id: '3', 
@@ -61,7 +61,7 @@ const MENU_ITEMS: MenuItem[] = [
     ingredients: 'poivrons, oignons, viande à kebab, fromages, olives, origan, sauce blanche', 
     prices: { t1: 11.00, t2: 13.00, t3: 15.00 }, 
     category: 'speciale',
-    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
+    image: 'images-produit/pizza/Kebab.png'
   },
   { 
     id: '4', 
@@ -69,7 +69,7 @@ const MENU_ITEMS: MenuItem[] = [
     ingredients: 'merguez, chorizo, poulet, viande hachée, oignons rouges, fromages, olives, origan', 
     prices: { t1: 11.00, t2: 13.00, t3: 15.00 }, 
     category: 'speciale',
-    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
+    image: 'images-produit/pizza/Texane.png'
   },
   { 
     id: '5', 
@@ -77,7 +77,7 @@ const MENU_ITEMS: MenuItem[] = [
     ingredients: 'pepperoni, viande hachée, fromages, oeuf, olives, origan', 
     prices: { t1: 11.80, t2: 13.80, t3: 15.80 }, 
     category: 'speciale',
-    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
+    image: 'images-produit/pizza/Pepperoni.png'
   },
   { 
     id: '6', 
@@ -85,7 +85,7 @@ const MENU_ITEMS: MenuItem[] = [
     ingredients: 'jambon, oignons, champignons, poitrine fumée, crème fraiche, persillade, fromages, olives, origan', 
     prices: { t1: 11.80, t2: 13.80, t3: 15.80 }, 
     category: 'speciale',
-    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
+    image: 'images-produit/pizza/Charentaise.png'
   },
   { 
     id: '7', 
@@ -93,7 +93,7 @@ const MENU_ITEMS: MenuItem[] = [
     ingredients: 'viande hachée, cheddar, tomates fraîches, salade, oignons rouges, fromages, olives, origan, sauce barbecue', 
     prices: { t1: 11.80, t2: 13.80, t3: 15.80 }, 
     category: 'speciale',
-    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
+    image: 'images-produit/pizza/Barbecue.png'
   },
   { 
     id: '8', 
