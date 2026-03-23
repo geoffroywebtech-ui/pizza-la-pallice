@@ -20,7 +20,7 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   if (!product) return null;
 
   return (
-    <div className="w-full h-full relative shadow-2xl rounded-[2.5rem] overflow-hidden group border border-zinc-200/20">
+    <div className="w-full aspect-video relative shadow-2xl rounded-[2.5rem] overflow-hidden group border border-zinc-200/20">
 
       {/* Image Pleine sans aucune bordure top */}
       <div className="w-full h-full">
@@ -36,7 +36,7 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
         />
         
         {/* Overlay esthétique */}
-        <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
+        <div className="absolute inset-x-0 bottom-0 h-1/3 bg-linear-to-t from-black/20 to-transparent pointer-events-none" />
       </div>
     </div>
   );

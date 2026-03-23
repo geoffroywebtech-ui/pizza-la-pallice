@@ -1,9 +1,9 @@
-﻿/**
+/**
  * @license
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Pizza, 
@@ -40,7 +40,7 @@ const MENU_ITEMS: MenuItem[] = [
   { 
     id: '1', 
     name: '4 Fromages', 
-    ingredients: 'ch├¿vre, roquefort, mozzarella, emmental, olives, origan', 
+    ingredients: 'chèvre, roquefort, mozzarella, emmental, olives, origan', 
     prices: { t1: 10.50, t2: 12.50, t3: 14.50 }, 
     category: 'classique',
     image: 'images-produit/pizza/4-Fromages.png',
@@ -58,7 +58,7 @@ const MENU_ITEMS: MenuItem[] = [
   { 
     id: '3', 
     name: 'Kebab', 
-    ingredients: 'poivrons, oignons, viande ├á kebab, fromages, olives, origan, sauce blanche', 
+    ingredients: 'poivrons, oignons, viande à kebab, fromages, olives, origan, sauce blanche', 
     prices: { t1: 11.00, t2: 13.00, t3: 15.00 }, 
     category: 'speciale',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
@@ -66,7 +66,7 @@ const MENU_ITEMS: MenuItem[] = [
   { 
     id: '4', 
     name: 'Texane', 
-    ingredients: 'merguez, chorizo, poulet, viande hach├®e, oignons rouges, fromages, olives, origan', 
+    ingredients: 'merguez, chorizo, poulet, viande hachée, oignons rouges, fromages, olives, origan', 
     prices: { t1: 11.00, t2: 13.00, t3: 15.00 }, 
     category: 'speciale',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
@@ -74,7 +74,7 @@ const MENU_ITEMS: MenuItem[] = [
   { 
     id: '5', 
     name: 'Pepperoni', 
-    ingredients: 'pepperoni, viande hach├®e, fromages, oeuf, olives, origan', 
+    ingredients: 'pepperoni, viande hachée, fromages, oeuf, olives, origan', 
     prices: { t1: 11.80, t2: 13.80, t3: 15.80 }, 
     category: 'speciale',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
@@ -82,7 +82,7 @@ const MENU_ITEMS: MenuItem[] = [
   { 
     id: '6', 
     name: 'Charentaise', 
-    ingredients: 'jambon, oignons, champignons, poitrine fum├®e, cr├¿me fraiche, persillade, fromages, olives, origan', 
+    ingredients: 'jambon, oignons, champignons, poitrine fumée, crème fraiche, persillade, fromages, olives, origan', 
     prices: { t1: 11.80, t2: 13.80, t3: 15.80 }, 
     category: 'speciale',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
@@ -90,7 +90,7 @@ const MENU_ITEMS: MenuItem[] = [
   { 
     id: '7', 
     name: 'Barbecue', 
-    ingredients: 'viande hach├®e, cheddar, tomates fra├«ches, salade, oignons rouges, fromages, olives, origan, sauce barbecue', 
+    ingredients: 'viande hachée, cheddar, tomates fraîches, salade, oignons rouges, fromages, olives, origan, sauce barbecue', 
     prices: { t1: 11.80, t2: 13.80, t3: 15.80 }, 
     category: 'speciale',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
@@ -98,7 +98,7 @@ const MENU_ITEMS: MenuItem[] = [
   { 
     id: '8', 
     name: 'Orientale', 
-    ingredients: 'champignons, merguez, oignons, poivrons, viande hach├®e, fromages, olives, origan', 
+    ingredients: 'champignons, merguez, oignons, poivrons, viande hachée, fromages, olives, origan', 
     prices: { t1: 11.00, t2: 13.00, t3: 15.00 }, 
     category: 'speciale',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
@@ -132,7 +132,7 @@ const MENU_ITEMS: MenuItem[] = [
   { 
     id: '12', 
     name: 'Roquefort', 
-    ingredients: 'oignons, roquefort, cr├¿me fraiche, lardons, fromages, olives, origan', 
+    ingredients: 'oignons, roquefort, crème fraiche, lardons, fromages, olives, origan', 
     prices: { t1: 9.50, t2: 11.50, t3: 13.50 }, 
     category: 'classique',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
@@ -148,7 +148,7 @@ const MENU_ITEMS: MenuItem[] = [
   { 
     id: '14', 
     name: 'Apache', 
-    ingredients: 'oignons, poulet, cr├¿me fraiche, curry, fromages, olives, origan', 
+    ingredients: 'oignons, poulet, crème fraiche, curry, fromages, olives, origan', 
     prices: { t1: 9.50, t2: 11.50, t3: 13.50 }, 
     category: 'speciale',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
@@ -156,15 +156,15 @@ const MENU_ITEMS: MenuItem[] = [
   { 
     id: '15', 
     name: 'Mixte', 
-    ingredients: 'ananas, poulet, cr├¿me fra├«che, curry, fromages, olives, origan', 
+    ingredients: 'ananas, poulet, crème fraîche, curry, fromages, olives, origan', 
     prices: { t1: 9.50, t2: 11.50, t3: 13.50 }, 
     category: 'speciale',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
   { 
     id: '16', 
-    name: 'Vend├®enne', 
-    ingredients: 'jambon de pays, oignons, cr├¿me fra├«che, fromages, olives, origan', 
+    name: 'Vendéenne', 
+    ingredients: 'jambon de pays, oignons, crème fraîche, fromages, olives, origan', 
     prices: { t1: 9.50, t2: 11.50, t3: 13.50 }, 
     category: 'classique',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
@@ -172,7 +172,7 @@ const MENU_ITEMS: MenuItem[] = [
   { 
     id: '17', 
     name: 'Chevrette', 
-    ingredients: 'ch├¿vre, cr├¿me fraiche, fromages, olives, origan', 
+    ingredients: 'chèvre, crème fraiche, fromages, olives, origan', 
     prices: { t1: 9.50, t2: 11.50, t3: 13.50 }, 
     category: 'classique',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800',
@@ -180,7 +180,7 @@ const MENU_ITEMS: MenuItem[] = [
   },
   { 
     id: '18', 
-    name: 'V├®g├®tarienne', 
+    name: 'Végétarienne', 
     ingredients: 'oignons, poivrons, champignons, fromages, olives, origan', 
     prices: { t1: 9.50, t2: 11.50, t3: 13.50 }, 
     category: 'vegetarienne',
@@ -189,8 +189,8 @@ const MENU_ITEMS: MenuItem[] = [
   },
   { 
     id: '19', 
-    name: 'Norv├®gienne', 
-    ingredients: 'saumon fum├®, cr├¿me fra├«che, fromages, olives, origan', 
+    name: 'Norvégienne', 
+    ingredients: 'saumon fumé, crème fraîche, fromages, olives, origan', 
     prices: { t1: 10.50, t2: 12.50, t3: 14.50 }, 
     category: 'speciale',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
@@ -198,7 +198,7 @@ const MENU_ITEMS: MenuItem[] = [
   { 
     id: '20', 
     name: 'Bolognaise', 
-    ingredients: 'viande de boeuf hach├®e cuisin├®e, fromages, olives, origan', 
+    ingredients: 'viande de boeuf hachée cuisinée, fromages, olives, origan', 
     prices: { t1: 10.50, t2: 12.50, t3: 14.50 }, 
     category: 'classique',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
@@ -221,8 +221,8 @@ const MENU_ITEMS: MenuItem[] = [
   },
   { 
     id: '23', 
-    name: 'Champ├¬tre', 
-    ingredients: 'mozzarella, poivrons, ch├¿vre, pesto, olives, origan', 
+    name: 'Champêtre', 
+    ingredients: 'mozzarella, poivrons, chèvre, pesto, olives, origan', 
     prices: { t1: 10.50, t2: 12.50, t3: 14.50 }, 
     category: 'vegetarienne',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800',
@@ -239,7 +239,7 @@ const MENU_ITEMS: MenuItem[] = [
   { 
     id: '25', 
     name: 'La Pallice', 
-    ingredients: 'jambon, g├®siers, champignons, ch├¿vre, fromages, olives, origan', 
+    ingredients: 'jambon, gésiers, champignons, chèvre, fromages, olives, origan', 
     prices: { t1: 10.50, t2: 12.50, t3: 14.50 }, 
     category: 'speciale',
     image: 'images-produit/pizza/La-Pallice.png'
@@ -256,7 +256,7 @@ const MENU_ITEMS: MenuItem[] = [
   { 
     id: '27', 
     name: 'Delicieuse', 
-    ingredients: 'oignons, poulet, poivrons, chorizo, cr├¿me fraiche, fromages, olives, origan', 
+    ingredients: 'oignons, poulet, poivrons, chorizo, crème fraiche, fromages, olives, origan', 
     prices: { t1: 10.50, t2: 12.50, t3: 14.50 }, 
     category: 'speciale',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
@@ -272,7 +272,7 @@ const MENU_ITEMS: MenuItem[] = [
   { 
     id: '29', 
     name: 'Cesar', 
-    ingredients: 'tenders de poulet, tomates confites, parmesan, salade, fromages, olives, origan, sauce c├®sar', 
+    ingredients: 'tenders de poulet, tomates confites, parmesan, salade, fromages, olives, origan, sauce césar', 
     prices: { t1: 11.80, t2: 13.80, t3: 15.80 }, 
     category: 'speciale',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
@@ -280,7 +280,7 @@ const MENU_ITEMS: MenuItem[] = [
   { 
     id: '30', 
     name: 'Savoureuse', 
-    ingredients: 'champignons, g├®siers, magret fum├®, foie gras, noix, salade, fromages, origan, vinaigre de framboise', 
+    ingredients: 'champignons, gésiers, magret fumé, foie gras, noix, salade, fromages, origan, vinaigre de framboise', 
     prices: { t1: 13.00, t2: 15.00, t3: 17.00 }, 
     category: 'speciale',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
@@ -288,7 +288,7 @@ const MENU_ITEMS: MenuItem[] = [
   { 
     id: '31', 
     name: '6 Fromages', 
-    ingredients: 'ch├¿vre, cheddar, reblochon, emmental, roquefort, mozzarella, olives, origan', 
+    ingredients: 'chèvre, cheddar, reblochon, emmental, roquefort, mozzarella, olives, origan', 
     prices: { t1: 11.80, t2: 13.80, t3: 15.80 }, 
     category: 'classique',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800',
@@ -313,7 +313,7 @@ const MENU_ITEMS: MenuItem[] = [
   { 
     id: '34', 
     name: 'Burger', 
-    ingredients: 'viande hach├®e, cheddar, tomates fra├«ches, salade, oignons, fromages, olives, origan, sauce burger', 
+    ingredients: 'viande hachée, cheddar, tomates fraîches, salade, oignons, fromages, olives, origan, sauce burger', 
     prices: { t1: 11.80, t2: 13.80, t3: 15.80 }, 
     category: 'speciale',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800',
@@ -322,15 +322,15 @@ const MENU_ITEMS: MenuItem[] = [
   { 
     id: '35', 
     name: 'Maya', 
-    ingredients: 'lardons, tomates confites, ch├¿vre, fromages, olives, origan, miel', 
+    ingredients: 'lardons, tomates confites, chèvre, fromages, olives, origan, miel', 
     prices: { t1: 11.80, t2: 13.80, t3: 15.80 }, 
     category: 'speciale',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
   { 
     id: '36', 
-    name: 'Foresti├¿re', 
-    ingredients: "moutarde ├á l'ancienne, poulet, champignons, fromages, olives, origan", 
+    name: 'Forestière', 
+    ingredients: "moutarde à l'ancienne, poulet, champignons, fromages, olives, origan", 
     prices: { t1: 11.80, t2: 13.80, t3: 15.80 }, 
     category: 'speciale',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
@@ -338,7 +338,7 @@ const MENU_ITEMS: MenuItem[] = [
   { 
     id: '37', 
     name: 'Cannibale', 
-    ingredients: 'pommes de terre, poulet, viande hach├®e, kebab, lardons, chorizo, fromages, olives, origan, sauce samoura├»', 
+    ingredients: 'pommes de terre, poulet, viande hachée, kebab, lardons, chorizo, fromages, olives, origan, sauce samouraï', 
     prices: { t1: 11.80, t2: 13.80, t3: 15.80 }, 
     category: 'speciale',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
@@ -354,10 +354,10 @@ const MENU_ITEMS: MenuItem[] = [
   { 
     id: '39', 
     name: 'Chevre Miel', 
-    ingredients: 'ch├¿vre, miel, noix, fromages, olives, origan', 
+    ingredients: 'chèvre, miel, noix, fromages, olives, origan', 
     prices: { t1: 10.50, t2: 12.50, t3: 14.50 }, 
     category: 'speciale',
-    image: 'images-produit/pizza/Ch├¿vre-Miel.png',
+    image: 'images-produit/pizza/Chèvre-Miel.png',
     isVeggie: true
   },
   { 
@@ -371,7 +371,7 @@ const MENU_ITEMS: MenuItem[] = [
   },
   { 
     id: '41', 
-    name: 'Oc├®ane', 
+    name: 'Océane', 
     ingredients: 'fruits de mer, ail, persillade, fromages, olives, origan', 
     prices: { t1: 11.50, t2: 13.50, t3: 15.50 }, 
     category: 'speciale',
@@ -385,11 +385,11 @@ const MENU_ITEMS: MenuItem[] = [
     category: 'speciale',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
-  // --- PANINIS (6.00Ôé¼) ---
+  // --- PANINIS (6.00€) ---
   { 
     id: 'p1', 
     name: 'Panini Classique', 
-    ingredients: 'Jambon ou Chorizo ou Viande hach├®e, fromages', 
+    ingredients: 'Jambon ou Chorizo ou Viande hachée, fromages', 
     prices: { t1: 6.00 }, 
     category: 'panini',
     image: 'https://images.unsplash.com/photo-1520174691701-bc555a3404ca?auto=format&fit=crop&q=80&w=800'
@@ -405,7 +405,7 @@ const MENU_ITEMS: MenuItem[] = [
   { 
     id: 'p3', 
     name: 'Panini 4 Fromages', 
-    ingredients: 'Roquefort, ch├¿vre, mozzarella, emmental', 
+    ingredients: 'Roquefort, chèvre, mozzarella, emmental', 
     prices: { t1: 6.00 }, 
     category: 'panini',
     image: 'https://images.unsplash.com/photo-1520174691701-bc555a3404ca?auto=format&fit=crop&q=80&w=800'
@@ -413,7 +413,7 @@ const MENU_ITEMS: MenuItem[] = [
   { 
     id: 'p4', 
     name: 'Panini Saumon', 
-    ingredients: 'Saumon fum├®, cr├¿me fraiche, fromages', 
+    ingredients: 'Saumon fumé, crème fraiche, fromages', 
     prices: { t1: 6.00 }, 
     category: 'panini',
     image: 'https://images.unsplash.com/photo-1520174691701-bc555a3404ca?auto=format&fit=crop&q=80&w=800'
@@ -421,7 +421,7 @@ const MENU_ITEMS: MenuItem[] = [
   { 
     id: 'p5', 
     name: 'Panini Pays', 
-    ingredients: 'Jambon de pays, ch├¿vre, fromages', 
+    ingredients: 'Jambon de pays, chèvre, fromages', 
     prices: { t1: 6.00 }, 
     category: 'panini',
     image: 'https://images.unsplash.com/photo-1520174691701-bc555a3404ca?auto=format&fit=crop&q=80&w=800'
@@ -438,7 +438,7 @@ const MENU_ITEMS: MenuItem[] = [
   { 
     id: 'l1', 
     name: 'Lasagnes Maison', 
-    ingredients: '1 part (8.50Ôé¼) / ├Ç partir de 4 parts (7.00Ôé¼ la part)', 
+    ingredients: '1 part (8.50€) / ├Ç partir de 4 parts (7.00€ la part)', 
     prices: { t1: 8.50 }, 
     category: 'lasagne',
     image: 'https://images.unsplash.com/photo-1574894709920-11b28e7367e3?auto=format&fit=crop&q=80&w=800'
@@ -447,7 +447,7 @@ const MENU_ITEMS: MenuItem[] = [
   { 
     id: 'd1', 
     name: 'Pizza Nutella Gourmande', 
-    ingredients: 'Ananas ou poires, amandes effil├®es', 
+    ingredients: 'Ananas ou poires, amandes effilées', 
     prices: { t1: 10.00 }, 
     category: 'dessert',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
@@ -496,7 +496,7 @@ const MENU_ITEMS: MenuItem[] = [
   { 
     id: 'b1', 
     name: 'Soda 33cl', 
-    ingredients: 'Coca, Coca cherry, Coca z├®ro, Oasis, Ice tea, Orangina', 
+    ingredients: 'Coca, Coca cherry, Coca zéro, Oasis, Ice tea, Orangina', 
     prices: { t1: 2.00 }, 
     category: 'boisson',
     image: 'https://images.unsplash.com/photo-1622483767028-3f66f34a507c?auto=format&fit=crop&q=80&w=800'
@@ -511,7 +511,7 @@ const MENU_ITEMS: MenuItem[] = [
   },
   { 
     id: 'b3', 
-    name: 'Bi├¿res Canettes', 
+    name: 'Bières Canettes', 
     ingredients: 'Heineken, Desperados, etc.', 
     prices: { t1: 2.50 }, 
     category: 'boisson',
@@ -519,8 +519,8 @@ const MENU_ITEMS: MenuItem[] = [
   },
   { 
     id: 'b4', 
-    name: 'Bi├¿res Bouteilles', 
-    ingredients: 'S├®lection artisanale', 
+    name: 'Bières Bouteilles', 
+    ingredients: 'Sélection artisanale', 
     prices: { t1: 3.00 }, 
     category: 'boisson',
     image: 'https://images.unsplash.com/photo-1535958636474-b021ee887b13?auto=format&fit=crop&q=80&w=800'
@@ -528,7 +528,7 @@ const MENU_ITEMS: MenuItem[] = [
   { 
     id: 'b5', 
     name: 'Vins 75cl', 
-    ingredients: 'Lambrusco, Ros├®, Bordeaux', 
+    ingredients: 'Lambrusco, Rosé, Bordeaux', 
     prices: { t1: 12.00 }, 
     category: 'boisson',
     image: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&q=80&w=800'
@@ -546,8 +546,8 @@ const MENU_ITEMS: MenuItem[] = [
 const CATEGORIES = [
   { id: 'all', label: 'Tout' },
   { id: 'classique', label: 'Classiques' },
-  { id: 'speciale', label: 'Sp├®ciales' },
-  { id: 'vegetarienne', label: 'V├®g├®' },
+  { id: 'speciale', label: 'Spéciales' },
+  { id: 'vegetarienne', label: 'Végé' },
   { id: 'panini', label: 'Paninis' },
   { id: 'lasagne', label: 'Lasagnes' },
   { id: 'dessert', label: 'Desserts' },
@@ -614,7 +614,7 @@ const PizzaVisual = ({ id }: { id: string }) => {
             <circle cx="50" cy="50" r="12" stroke="white" strokeWidth="1" fill="none" opacity="0.5" />
           </>
         );
-      case '5': // Oc├®ane: fruits de mer
+      case '5': // Océane: fruits de mer
         return (
           <>
             <path d="M40,40 Q45,35 50,40" stroke="#FFAB91" fill="none" strokeWidth="3" />
@@ -625,7 +625,7 @@ const PizzaVisual = ({ id }: { id: string }) => {
             ))}
           </>
         );
-      case '6': // V├®g├®tarienne: poivrons, aubergines, courgettes
+      case '6': // Végétarienne: poivrons, aubergines, courgettes
         return (
           <>
             <rect x="30" y="30" width="15" height="3" fill="#43A047" rx="1" transform="rotate(45 30 30)" />
@@ -634,7 +634,7 @@ const PizzaVisual = ({ id }: { id: string }) => {
             <circle cx="50" cy="35" r="6" fill="#81C784" opacity="0.8" />
           </>
         );
-      case '7': // Ch├¿vre Miel: ch├¿vre, miel, noix
+      case '7': // Chèvre Miel: chèvre, miel, noix
         return (
           <>
             <circle cx="40" cy="40" r="8" fill="white" />
@@ -643,7 +643,7 @@ const PizzaVisual = ({ id }: { id: string }) => {
             <circle cx="55" cy="35" r="4" fill="#795548" />
           </>
         );
-      case '9': // Orientale: merguez, poivrons, ┼ôuf
+      case '9': // Orientale: merguez, poivrons, œuf
         return (
           <>
             <rect x="35" y="35" width="12" height="4" fill="#8D6E63" rx="2" />
@@ -653,7 +653,7 @@ const PizzaVisual = ({ id }: { id: string }) => {
             <circle cx="50" cy="50" r="5" fill="#FFD600" />
           </>
         );
-      case '10': // Paysanne: lardons, oignons, ┼ôuf
+      case '10': // Paysanne: lardons, oignons, œuf
         return (
           <>
             <rect x="30" y="30" width="4" height="8" fill="#E57373" rx="1" />
@@ -663,7 +663,7 @@ const PizzaVisual = ({ id }: { id: string }) => {
             <circle cx="40" cy="65" r="10" stroke="white" strokeWidth="1" fill="none" opacity="0.4" />
           </>
         );
-      case '11': // Bolognaise: viande hach├®e, oignons
+      case '11': // Bolognaise: viande hachée, oignons
         return (
           <>
             {[...Array(30)].map((_, i) => (
@@ -673,7 +673,7 @@ const PizzaVisual = ({ id }: { id: string }) => {
             <circle cx="60" cy="60" r="12" stroke="white" strokeWidth="1" fill="none" opacity="0.4" />
           </>
         );
-      case '12': // Hawa├»enne: jambon, ananas
+      case '12': // Hawaïenne: jambon, ananas
         return (
           <>
             <rect x="30" y="30" width="8" height="8" fill="#F48FB1" rx="1" />
@@ -825,11 +825,11 @@ const Hero = () => {
           </span>
           <h1 className="text-6xl md:text-8xl font-serif text-white font-bold leading-[0.9] mb-8 tracking-tighter">
             L'excellence de la <br />
-            <span className="italic text-brand-yellow">Pizza</span> ├á La Rochelle
+            <span className="italic text-brand-yellow">Pizza</span> à La Rochelle
           </h1>
           <p className="text-white/90 text-lg md:text-xl max-w-2xl mx-auto mb-10 font-medium leading-relaxed">
-            P├óte p├®trie ├á la main, ingr├®dients frais du march├® et passion italienne. 
-            D├®couvrez le go├╗t authentique de La Pallice.
+            P├óte pétrie à la main, ingrédients frais du marché et passion italienne. 
+            Découvrez le goût authentique de La Pallice.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a href="#menu" className="w-full sm:w-auto bg-brand-yellow text-brand-green px-10 py-4 rounded-full font-black text-lg hover:scale-105 transition-all shadow-2xl shadow-brand-yellow/40 text-center">
@@ -854,7 +854,7 @@ const Hero = () => {
   );
 };
 
-const MenuCard = ({ item }: { item: MenuItem }) => {
+const MenuCard: React.FC<{ item: MenuItem }> = ({ item }) => {
   const [selectedSize, setSelectedSize] = useState<'t1' | 't2' | 't3'>('t2');
 
   const hasMultipleSizes = item.prices.t2 || item.prices.t3;
@@ -918,7 +918,7 @@ const MenuCard = ({ item }: { item: MenuItem }) => {
           <div className="flex flex-col">
             <span className="text-xs font-black text-zinc-400 uppercase tracking-widest mb-1">Prix</span>
             <span className="text-2xl font-serif font-bold text-brand-green">
-              {currentPrice.toFixed(2)}Ôé¼
+              {currentPrice.toFixed(2)}€
             </span>
           </div>
           <button className="bg-brand-green text-white px-6 py-3 rounded-2xl font-black text-sm hover:bg-brand-yellow hover:text-brand-green transition-all shadow-lg active:scale-95">
@@ -973,23 +973,23 @@ const MenuSection = () => {
         </div>
 
         <div className="mt-16 bg-white p-8 rounded-3xl shadow-lg border border-zinc-100 max-w-3xl mx-auto">
-          <h3 className="text-2xl font-serif font-bold text-center text-zinc-900 mb-6">Suppl├®ments</h3>
+          <h3 className="text-2xl font-serif font-bold text-center text-zinc-900 mb-6">Suppléments</h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
             <div className="p-4 bg-zinc-50 rounded-2xl">
               <span className="block font-bold text-zinc-900">Oeuf</span>
-              <span className="text-brand-green font-serif font-bold">1.00Ôé¼</span>
+              <span className="text-brand-green font-serif font-bold">1.00€</span>
             </div>
             <div className="p-4 bg-zinc-50 rounded-2xl">
               <span className="block font-bold text-zinc-900">Viande</span>
-              <span className="text-brand-green font-serif font-bold">2.00Ôé¼</span>
+              <span className="text-brand-green font-serif font-bold">2.00€</span>
             </div>
             <div className="p-4 bg-zinc-50 rounded-2xl">
               <span className="block font-bold text-zinc-900">Fromage</span>
-              <span className="text-brand-green font-serif font-bold">1.50Ôé¼</span>
+              <span className="text-brand-green font-serif font-bold">1.50€</span>
             </div>
             <div className="p-4 bg-zinc-50 rounded-2xl">
-              <span className="block font-bold text-zinc-900">L├®gumes</span>
-              <span className="text-brand-green font-serif font-bold">1.00Ôé¼</span>
+              <span className="block font-bold text-zinc-900">Légumes</span>
+              <span className="text-brand-green font-serif font-bold">1.00€</span>
             </div>
           </div>
         </div>
@@ -1013,14 +1013,14 @@ const DistributorSection = () => {
             <div className="space-y-8">
               <div>
                 <span className="inline-block px-4 py-1 rounded-full bg-brand-yellow text-brand-green text-xs font-black uppercase tracking-[0.2em] mb-6">
-                  7J/7 ÔÇó 24H/24
+                  7J/7 • 24H/24
                 </span>
                 <h2 className="text-5xl md:text-6xl font-serif font-bold leading-tight mb-6">
                   Notre <span className="text-brand-yellow">Distributeur</span> Automatique
                 </h2>
                 <p className="text-white/80 text-lg leading-relaxed">
-                  Retrouvez nos best-sellers r├®alis├®s tous les jours avec des produits frais, 
-                  directement dans notre distributeur automatique. La qualit├® artisanale, ├á toute heure !
+                  Retrouvez nos best-sellers réalisés tous les jours avec des produits frais, 
+                  directement dans notre distributeur automatique. La qualité artisanale, à toute heure !
                 </p>
               </div>
               
@@ -1033,7 +1033,7 @@ const DistributorSection = () => {
               </div>
               
               <button className="bg-brand-yellow text-brand-green px-10 py-4 rounded-full font-black text-lg hover:scale-105 transition-all shadow-xl">
-                Itin├®raire vers le distributeur
+                Itinéraire vers le distributeur
               </button>
             </div>
             
@@ -1041,16 +1041,16 @@ const DistributorSection = () => {
               <div className="aspect-square bg-white rounded-[2.5rem] p-8 shadow-inner flex items-center justify-center overflow-hidden border-8 border-brand-yellow">
                 <div className="text-center space-y-4">
                   <Pizza className="w-24 h-24 text-brand-green mx-auto" />
-                  <p className="text-brand-green font-black text-2xl uppercase tracking-tighter">Pr├¬t en 3 minutes</p>
+                  <p className="text-brand-green font-black text-2xl uppercase tracking-tighter">Prêt en 3 minutes</p>
                   <div className="w-16 h-1 bg-brand-yellow mx-auto" />
-                  <p className="text-zinc-400 text-sm font-medium">Pizzas artisanales fra├«ches</p>
+                  <p className="text-zinc-400 text-sm font-medium">Pizzas artisanales fraîches</p>
                 </div>
               </div>
               {/* Floating Badge */}
               <div className="absolute -bottom-6 -right-6 bg-brand-yellow text-brand-green p-6 rounded-full shadow-2xl rotate-12 border-4 border-brand-green">
                 <p className="font-black text-center leading-none">
                   <span className="text-xs uppercase block">├Ç partir de</span>
-                  <span className="text-3xl">7,50Ôé¼</span>
+                  <span className="text-3xl">7,50€</span>
                 </p>
               </div>
             </div>
@@ -1093,7 +1093,7 @@ const InfoSection = () => {
             <div>
               <h2 className="text-sm font-black text-brand-green uppercase tracking-[0.3em] mb-4">O├╣ nous trouver</h2>
               <h3 className="text-5xl font-serif font-bold text-zinc-900 leading-tight mb-6">
-                Passez nous voir <br /> ├á La Pallice
+                Passez nous voir <br /> à La Pallice
               </h3>
             </div>
 
@@ -1124,7 +1124,7 @@ const InfoSection = () => {
               <div className="space-y-4">
                 <div className="flex items-center gap-3 text-brand-green">
                   <Phone className="w-5 h-5" />
-                  <span className="font-black uppercase text-xs tracking-widest">T├®l├®phone</span>
+                  <span className="font-black uppercase text-xs tracking-widest">Téléphone</span>
                 </div>
                 <p className="text-brand-green font-black text-2xl tracking-tighter">
                   05 46 00 00 00
@@ -1174,14 +1174,14 @@ const Footer = () => {
             </span>
           </div>
           <div className="flex gap-8 text-sm font-bold text-white/60 uppercase tracking-widest">
-            <a href="#" className="hover:text-brand-yellow transition-colors">Mentions L├®gales</a>
-            <a href="#" className="hover:text-brand-yellow transition-colors">Confidentialit├®</a>
+            <a href="#" className="hover:text-brand-yellow transition-colors">Mentions Légales</a>
+            <a href="#" className="hover:text-brand-yellow transition-colors">Confidentialité</a>
             <a href="#" className="hover:text-brand-yellow transition-colors">Cookies</a>
           </div>
         </div>
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-white/40 text-[10px] uppercase tracking-[0.2em] font-black">
-          <p>┬® 2024 La Pallice Pizza. Tous droits r├®serv├®s.</p>
-          <p>Fait avec passion ├á La Rochelle</p>
+          <p>┬® 2024 La Pallice Pizza. Tous droits réservés.</p>
+          <p>Fait avec passion à La Rochelle</p>
         </div>
       </div>
     </footer>
@@ -1192,25 +1192,25 @@ const IngredientsSection = () => {
   const ingredients = [
     {
       title: "P├óte Artisanale",
-      description: "P├®trie chaque jour dans notre atelier avec une farine de qualit├® sup├®rieure pour une cro├╗te croustillante et l├®g├¿re.",
+      description: "Pétrie chaque jour dans notre atelier avec une farine de qualité supérieure pour une croûte croustillante et légère.",
       image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&q=80&w=800",
       icon: "­ƒÑû"
     },
     {
       title: "Tomates de Saison",
-      description: "Nos sauces sont cuisin├®es ├á partir de tomates m├╗ries au soleil, s├®lectionn├®es pour leur go├╗t intense et sucr├®.",
+      description: "Nos sauces sont cuisinées à partir de tomates mûries au soleil, sélectionnées pour leur goût intense et sucré.",
       image: "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&q=80&w=800",
       icon: "­ƒìà"
     },
     {
       title: "Mozzarella Fondante",
-      description: "Une mozzarella cr├®meuse qui fond d├®licatement pour lier tous les ingr├®dients dans une harmonie parfaite.",
+      description: "Une mozzarella crémeuse qui fond délicatement pour lier tous les ingrédients dans une harmonie parfaite.",
       image: "https://images.unsplash.com/photo-1559561853-08451507cbe7?auto=format&fit=crop&q=80&w=800",
       icon: "­ƒºÇ"
     },
     {
-      title: "L├®gumes Frais",
-      description: "Poivrons, aubergines, champignons... tous nos l├®gumes sont coup├®s chaque matin pour garantir leur fra├«cheur.",
+      title: "Légumes Frais",
+      description: "Poivrons, aubergines, champignons... tous nos légumes sont coupés chaque matin pour garantir leur fraîcheur.",
       image: "https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?auto=format&fit=crop&q=80&w=800",
       icon: "­ƒÑ¼"
     }
@@ -1220,9 +1220,9 @@ const IngredientsSection = () => {
     <section className="py-24 bg-zinc-50 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-20">
-          <h2 className="text-sm font-black text-brand-green uppercase tracking-[0.3em] mb-4">Le Secret du Go├╗t</h2>
+          <h2 className="text-sm font-black text-brand-green uppercase tracking-[0.3em] mb-4">Le Secret du Goût</h2>
           <h3 className="text-5xl font-serif font-bold text-zinc-900 leading-tight">
-            La Qualit├® <span className="text-brand-green italic">avant tout</span>
+            La Qualité <span className="text-brand-green italic">avant tout</span>
           </h3>
           <div className="w-24 h-1 bg-brand-yellow mx-auto mt-8" />
         </div>

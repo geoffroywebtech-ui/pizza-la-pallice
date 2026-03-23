@@ -1,7 +1,6 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown } from 'lucide-react';
 import { MenuItem, CartItem } from '../types';
 import { MENU_ITEMS, CATEGORIES } from '../data/menu';
 import MenuCard from './MenuCard';
@@ -11,16 +10,17 @@ interface MenuSectionProps {
   onAddToCart: (item: MenuItem, size: string, name?: string) => void;
   onUpdateQuantity: (cartId: string, delta: number) => void;
   cart: CartItem[];
+  menuItems: MenuItem[];
 }
 
-const MenuSection: React.FC<MenuSectionProps> = ({ onAddToCart, onUpdateQuantity, cart }) => {
+
+const MenuSection: React.FC<MenuSectionProps> = ({ onAddToCart, onUpdateQuantity, cart, menuItems }) => {
+
   const [activeCategory, setActiveCategory] = useState('all');
-  const [activeSubCategory, setActiveSubCategory] = useState<string | null>(null);
   const [selectedProduct, setSelectedProduct] = useState<MenuItem | null>(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [panelOffset, setPanelOffset] = useState({ top: 0, left: 0 });
   const [panelSide, setPanelSide] = useState<'left' | 'right'>('right');
-  const [isPizzasHovered, setIsPizzasHovered] = useState(false);
 
   const categoriesToDisplay = activeCategory === 'all' 
     ? CATEGORIES.filter(c => c.id !== 'all')
@@ -28,13 +28,6 @@ const MenuSection: React.FC<MenuSectionProps> = ({ onAddToCart, onUpdateQuantity
 
   const handleCategoryClick = (id: string) => {
     setActiveCategory(id);
-    setActiveSubCategory(null);
-  };
-
-  const handleSubCategoryClick = (subId: string) => {
-    setActiveCategory('pizzas');
-    setActiveSubCategory(subId);
-    setIsPizzasHovered(false);
   };
 
   const handleProductDetail = (product: MenuItem, e: React.MouseEvent) => {
@@ -83,16 +76,10 @@ const MenuSection: React.FC<MenuSectionProps> = ({ onAddToCart, onUpdateQuantity
           
           <div className="flex flex-wrap gap-2">
             {CATEGORIES.map((cat) => {
-              const isPizzas = cat.id === 'pizzas';
               const isActive = activeCategory === cat.id;
 
               return (
-                <div 
-                  key={cat.id} 
-                  className="relative"
-                  onMouseEnter={() => isPizzas && setIsPizzasHovered(true)}
-                  onMouseLeave={() => isPizzas && setIsPizzasHovered(false)}
-                >
+                <div key={cat.id} className="relative">
                   <button
                     onClick={() => handleCategoryClick(cat.id)}
                     className={`px-6 py-2 rounded-full text-sm font-bold transition-all flex items-center gap-2 ${
@@ -102,38 +89,7 @@ const MenuSection: React.FC<MenuSectionProps> = ({ onAddToCart, onUpdateQuantity
                     }`}
                   >
                     {cat.label}
-                    {isPizzas && <ChevronDown size={14} className={`transition-transform ${isPizzasHovered ? 'rotate-180' : ''}`} />}
                   </button>
-
-                  {isPizzas && (
-                    <AnimatePresence>
-                      {isPizzasHovered && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 10 }}
-                          className="absolute top-[80%] left-0 pt-4 w-56 z-50 pointer-events-auto"
-                        >
-                          <div className="bg-white rounded-2xl shadow-xl border border-zinc-100 p-2 overflow-hidden">
-                            <button
-                              onClick={() => handleSubCategoryClick('Base Tomate')}
-                              className="w-full text-left px-4 py-2.5 rounded-xl text-xs font-bold text-zinc-600 hover:bg-brand-green hover:text-white transition-all flex items-center gap-2"
-                            >
-                              <div className="w-1.5 h-1.5 rounded-full bg-red-400" />
-                              Pizza Sauce Tomate
-                            </button>
-                            <button
-                              onClick={() => handleSubCategoryClick('Base Crème')}
-                              className="w-full text-left px-4 py-2.5 rounded-xl text-xs font-bold text-zinc-600 hover:bg-brand-green hover:text-white transition-all flex items-center gap-2"
-                            >
-                              <div className="w-1.5 h-1.5 rounded-full bg-amber-100 border border-zinc-200" />
-                              Pizza Sauce Crème Fraîche
-                            </button>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  )}
                 </div>
               );
             })}
@@ -144,77 +100,36 @@ const MenuSection: React.FC<MenuSectionProps> = ({ onAddToCart, onUpdateQuantity
           <div className="w-full">
             <div className="space-y-16">
           {categoriesToDisplay.map((cat) => {
-            let items = MENU_ITEMS.filter(item => item.category === cat.id);
-            if (cat.id === 'pizzas' && activeSubCategory) {
-              items = items.filter(i => i.subCategory === activeSubCategory);
-            }
-            
-            if (items.length === 0) return null;
+            let items = menuItems.filter(item => item.category === cat.id);
 
-            const itemsWithSubCategory = items.filter(i => i.subCategory);
-            const itemsWithoutSubCategory = items.filter(i => !i.subCategory);
-            const subCategories = Array.from(new Set(itemsWithSubCategory.map(i => i.subCategory))).filter(Boolean);
+            if (items.length === 0) return null;
 
             return (
               <div key={cat.id} className="space-y-12">
                 <div className="flex items-center gap-6">
                   <h4 className="text-3xl font-serif font-bold text-zinc-900 shrink-0 uppercase tracking-tight">
-                    {activeSubCategory && cat.id === 'pizzas' ? `Pizzas : ${activeSubCategory}` : cat.label}
+                    {cat.label}
                   </h4>
                   <div className="h-px bg-zinc-200 flex-grow" />
                 </div>
 
-                {subCategories.length > 0 ? (
-                  <div className="space-y-16">
-                    {subCategories.map(subCat => {
-                      const subItems = itemsWithSubCategory.filter(i => i.subCategory === subCat);
-                      return (
-                        <div key={subCat as string} className="space-y-8">
-                          <div className="flex items-center gap-4">
-                            <h5 className="text-lg font-bold text-brand-green uppercase tracking-widest pl-4 border-l-4 border-brand-green">
-                              {subCat}
-                            </h5>
-                          </div>
-                          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-3 gap-y-4 lg:gap-x-4 xl:grid-cols-5">
-                            {subItems.map((item) => (
-                        <MenuCard 
-                          key={item.id} 
-                          item={item} 
-                          cartItems={cart.filter(i => i.id === item.id)}
-                          onAddToCart={(size, name) => {
-                            onAddToCart(item, size, name);
-                            setIsDetailOpen(false);
-                          }}
-                          onUpdateQuantity={onUpdateQuantity}
-                          onDetailClick={(e) => handleProductDetail(item, e)}
-                          onMouseEnter={(e) => handleProductDetail(item, e)}
-                          onMouseLeave={() => setIsDetailOpen(false)}
-                        />
-                            ))}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-3 gap-y-4 lg:gap-x-4 xl:grid-cols-5">
-                    {itemsWithoutSubCategory.map((item) => (
-                      <MenuCard 
-                        key={item.id} 
-                        item={item} 
-                        cartItems={cart.filter(i => i.id === item.id)}
-                        onAddToCart={(size, name) => {
-                          onAddToCart(item, size, name);
-                          setIsDetailOpen(false);
-                        }}
-                        onUpdateQuantity={onUpdateQuantity}
-                        onDetailClick={(e) => handleProductDetail(item, e)}
-                        onMouseEnter={(e) => handleProductDetail(item, e)}
-                        onMouseLeave={() => setIsDetailOpen(false)}
-                      />
-                    ))}
-                  </div>
-                )}
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-3 gap-y-4 lg:gap-x-4 xl:grid-cols-5">
+                  {items.map((item) => (
+                    <MenuCard 
+                      key={item.id} 
+                      item={item} 
+                      cartItems={cart.filter(i => i.id === item.id)}
+                      onAddToCart={(size, name) => {
+                        onAddToCart(item, size, name);
+                        setIsDetailOpen(false);
+                      }}
+                      onUpdateQuantity={onUpdateQuantity}
+                      onDetailClick={(e) => handleProductDetail(item, e)}
+                      onMouseEnter={(e) => handleProductDetail(item, e)}
+                      onMouseLeave={() => setIsDetailOpen(false)}
+                    />
+                  ))}
+                </div>
               </div>
             );
           })}
@@ -227,11 +142,11 @@ const MenuSection: React.FC<MenuSectionProps> = ({ onAddToCart, onUpdateQuantity
                 initial={{ opacity: 0, scale: 0.9, x: panelSide === 'right' ? -20 : 20 }}
                 animate={{ opacity: 1, scale: 1, x: 0 }}
                 exit={{ opacity: 0, scale: 0.9 }}
-                className="fixed z-[100] pointer-events-none shadow-2xl rounded-[2.5rem] overflow-hidden bg-white"
+                className="fixed z-[100] border-4 border-white pointer-events-none shadow-[0_20px_50px_rgba(0,0,0,0.3)] rounded-[2.5rem] overflow-hidden bg-white"
                 style={{ 
                   top: panelOffset.top,
                   left: panelOffset.left,
-                  width: window.innerWidth < 768 ? '90vw' : '550px',
+                  width: window.innerWidth < 768 ? '90vw' : '400px',
                   transform: 'translateY(-50%)',
                   maxHeight: '90vh'
                 }}

@@ -26,14 +26,14 @@ const CustomerHistoryModal: React.FC<CustomerHistoryModalProps> = ({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/60 backdrop-blur-md z-[60]"
+            className="fixed inset-0 bg-black/60 backdrop-blur-md z-60"
           />
           <motion.div
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed right-0 top-0 h-full w-full max-w-md bg-zinc-50 shadow-2xl z-[70] overflow-hidden flex flex-col"
+            className="fixed right-0 top-0 h-full w-full max-w-md bg-zinc-50 shadow-2xl z-70 overflow-hidden flex flex-col"
           >
             {/* Header */}
             <div className="bg-white p-8 border-b border-zinc-100 flex items-center justify-between">
@@ -49,7 +49,7 @@ const CustomerHistoryModal: React.FC<CustomerHistoryModalProps> = ({
               </button>
             </div>
 
-            <div className="flex-grow overflow-y-auto p-6 space-y-8">
+            <div className="grow overflow-y-auto p-6 space-y-8">
               {/* Promotions Section */}
               <section className="space-y-4">
                 <div className="flex items-center gap-2 text-brand-green mb-4">
@@ -113,7 +113,10 @@ const CustomerHistoryModal: React.FC<CustomerHistoryModalProps> = ({
                               ? 'bg-brand-yellow/10 text-brand-green border-brand-yellow/20'
                               : 'bg-zinc-50 text-zinc-500 border-zinc-100'
                           }`}>
-                            {order.status}
+                            {order.status === 'new' ? 'Nouveau' : 
+                             order.status === 'preparing' ? 'Préparation' : 
+                             order.status === 'delivering' ? 'Livraison' : 
+                             order.status === 'completed' ? 'Terminé' : order.status}
                           </span>
                         </div>
 

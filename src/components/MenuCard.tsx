@@ -40,7 +40,9 @@ const MenuCard: React.FC<MenuCardProps> = ({
       onMouseLeave={() => onMouseLeave()}
     >
       {/* Background card with hover shading */}
-      <div className={`bg-white pt-6 pb-4 px-4 rounded-[2rem] shadow-sm border flex flex-col h-full transition-all duration-300 border-zinc-100 group-hover:shadow-[0_20px_50px_rgba(33,53,49,0.1)] group-hover:border-zinc-200 ${anyInCart ? 'bg-brand-green/5' : ''}`}>
+      {/* Background card with hover shading */}
+      <div className={`bg-white pt-6 pb-4 px-4 rounded-[2rem] shadow-sm border flex flex-col h-full transition-all duration-300 border-zinc-100 group-hover:shadow-[0_20px_50px_rgba(33,53,49,0.1)] group-hover:border-zinc-200 ${anyInCart ? 'bg-brand-green/5' : ''} ${item.isAvailable === false ? 'opacity-50 grayscale pointer-events-none' : ''}`}>
+
         
         {/* Image Container */}
         <div className="relative mx-auto aspect-square w-full max-w-[120px] mb-4">
@@ -50,6 +52,8 @@ const MenuCard: React.FC<MenuCardProps> = ({
               alt={item.name}
               className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-500"
               referrerPolicy="no-referrer"
+              loading="lazy"
+
               onError={(e) => {
                 (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800';
               }}
@@ -62,15 +66,22 @@ const MenuCard: React.FC<MenuCardProps> = ({
           )}
           {item.popular && (
             <div className="absolute -top-1 -right-1 z-30 bg-brand-yellow text-brand-green text-[8px] font-black uppercase tracking-widest px-2 py-1 rounded-full shadow-lg border border-white">
-              Best
+              SÉLECTION
             </div>
           )}
+
           {item.isVeggie && (
              <div className="absolute top-0 left-0 z-30 bg-brand-green text-white p-1 rounded-full shadow-md">
                <Star size={10} fill="currentColor" />
              </div>
           )}
+          {item.isAvailable === false && (
+            <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/40 rounded-2xl">
+              <span className="bg-red-600 text-white text-[10px] font-black uppercase tracking-tighter px-2 py-1 rounded-lg shadow-xl -rotate-12 border-2 border-white/50">Rupture</span>
+            </div>
+          )}
         </div>
+
 
         {/* Name and Ingredients */}
         <div className="flex-grow text-center">

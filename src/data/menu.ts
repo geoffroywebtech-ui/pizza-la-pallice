@@ -3,7 +3,8 @@ import { MenuItem, Category } from '../types';
 
 export const CATEGORIES: Category[] = [
   { id: 'all', label: 'Tout' },
-  { id: 'pizzas', label: 'Les Pizzas' },
+  { id: 'pizzas-tomate', label: 'Sauce Tomate' },
+  { id: 'pizzas-creme', label: 'Sauce Crème' },
   { id: 'panini', label: 'Paninis' },
   { id: 'lasagne', label: 'Lasagnes Maison' },
   { id: 'dessert', label: 'Desserts' },
@@ -17,7 +18,7 @@ export const MENU_ITEMS: MenuItem[] = [
     name: 'Pepperoni', 
     ingredients: 'pepperoni, viande hachée, fromages, oeuf, olives, origan', 
     prices: { t1: 11.80, t2: 13.80, t3: 15.80 }, 
-    category: 'pizzas',
+    category: 'pizzas-tomate',
     subCategory: 'Base Tomate',
     image: 'images-produit/pizza/Pepperoni.png'
   },
@@ -26,7 +27,7 @@ export const MENU_ITEMS: MenuItem[] = [
     name: 'Charentaise', 
     ingredients: 'jambon, oignons, champignons, poitrine fumée, crème fraiche, persillade, fromages, olives, origan', 
     prices: { t1: 11.80, t2: 13.80, t3: 15.80 }, 
-    category: 'pizzas',
+    category: 'pizzas-tomate',
     subCategory: 'Base Tomate',
     image: 'images-produit/pizza/Charentaise.png'
   },
@@ -35,7 +36,7 @@ export const MENU_ITEMS: MenuItem[] = [
     name: 'Barbecue', 
     ingredients: 'viande hachée, cheddar, tomates fraîches, salade, oignons rouges, fromages, olives, origan, sauce barbecue', 
     prices: { t1: 11.80, t2: 13.80, t3: 15.80 }, 
-    category: 'pizzas',
+    category: 'pizzas-tomate',
     subCategory: 'Base Tomate',
     image: 'images-produit/pizza/Barbecue.png'
   },
@@ -44,16 +45,16 @@ export const MENU_ITEMS: MenuItem[] = [
     name: 'Orientale', 
     ingredients: 'champignons, merguez, oignons, poivrons, viande hachée, fromages, olives, origan', 
     prices: { t1: 11.00, t2: 13.00, t3: 15.00 }, 
-    category: 'pizzas',
+    category: 'pizzas-tomate',
     subCategory: 'Base Tomate',
-    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
+    image: 'images-produit/pizza/Orientale.png'
   },
   { 
     id: '9', 
     name: 'Margarita', 
     ingredients: 'fromages, olives, origan', 
     prices: { t1: 7.50, t2: 9.50, t3: 11.50 }, 
-    category: 'pizzas',
+    category: 'pizzas-tomate',
     subCategory: 'Base Tomate',
     image: 'images-produit/pizza/Margherita.png',
     isVeggie: true
@@ -63,16 +64,16 @@ export const MENU_ITEMS: MenuItem[] = [
     name: 'Bambini', 
     ingredients: 'jambon, fromages, olives, origan', 
     prices: { t1: 8.50, t2: 10.50, t3: 12.50 }, 
-    category: 'pizzas',
+    category: 'pizzas-tomate',
     subCategory: 'Base Tomate',
-    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
+    image: 'images-produit/pizza/Bambini.png'
   },
   { 
     id: '11', 
     name: 'Reine', 
     ingredients: 'jambon, champignons, fromages, olives, origan', 
     prices: { t1: 9.00, t2: 11.00, t3: 13.00 }, 
-    category: 'pizzas',
+    category: 'pizzas-tomate',
     subCategory: 'Base Tomate',
     image: 'images-produit/pizza/Reine.png',
     popular: true
@@ -82,16 +83,16 @@ export const MENU_ITEMS: MenuItem[] = [
     name: 'Roquefort', 
     ingredients: 'oignons, roquefort, crème fraiche, lardons, fromages, olives, origan', 
     prices: { t1: 9.50, t2: 11.50, t3: 13.50 }, 
-    category: 'pizzas',
+    category: 'pizzas-tomate',
     subCategory: 'Base Tomate',
-    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
+    image: 'images-produit/pizza/Roquefort.png'
   },
   { 
     id: '13', 
     name: 'Romaine', 
     ingredients: "oignons, filets d'anchois, câpres, poivrons, fromages, olives, origan", 
     prices: { t1: 9.50, t2: 11.50, t3: 13.50 }, 
-    category: 'pizzas',
+    category: 'pizzas-tomate',
     subCategory: 'Base Tomate',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -100,16 +101,16 @@ export const MENU_ITEMS: MenuItem[] = [
     name: 'Apache', 
     ingredients: 'oignons, poulet, crème fraiche, curry, fromages, olives, origan', 
     prices: { t1: 9.50, t2: 11.50, t3: 13.50 }, 
-    category: 'pizzas',
+    category: 'pizzas-tomate',
     subCategory: 'Base Tomate',
-    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
+    image: 'images-produit/pizza/Apache.png'
   },
   { 
     id: '15', 
     name: 'Mixte', 
     ingredients: 'ananas, poulet, crème fraîche, curry, fromages, olives, origan', 
     prices: { t1: 9.50, t2: 11.50, t3: 13.50 }, 
-    category: 'pizzas',
+    category: 'pizzas-tomate',
     subCategory: 'Base Tomate',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -118,7 +119,7 @@ export const MENU_ITEMS: MenuItem[] = [
     name: 'Vendéenne', 
     ingredients: 'jambon de pays, oignons, crème fraîche, fromages, olives, origan', 
     prices: { t1: 9.50, t2: 11.50, t3: 13.50 }, 
-    category: 'pizzas',
+    category: 'pizzas-tomate',
     subCategory: 'Base Tomate',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -127,7 +128,7 @@ export const MENU_ITEMS: MenuItem[] = [
     name: 'Chevrette', 
     ingredients: 'chèvre, crème fraiche, fromages, olives, origan', 
     prices: { t1: 9.50, t2: 11.50, t3: 13.50 }, 
-    category: 'pizzas',
+    category: 'pizzas-tomate',
     subCategory: 'Base Tomate',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800',
     isVeggie: true
@@ -137,9 +138,9 @@ export const MENU_ITEMS: MenuItem[] = [
     name: 'Végétarienne', 
     ingredients: 'oignons, poivrons, champignons, fromages, olives, origan', 
     prices: { t1: 9.50, t2: 11.50, t3: 13.50 }, 
-    category: 'pizzas',
+    category: 'pizzas-tomate',
     subCategory: 'Base Tomate',
-    image: 'images-produit/pizza/Végétarienne.png',
+    image: 'images-produit/pizza/Vegetarienne.png',
     isVeggie: true
   },
   { 
@@ -147,16 +148,16 @@ export const MENU_ITEMS: MenuItem[] = [
     name: 'Norvégienne', 
     ingredients: 'saumon fumé, crème fraîche, fromages, olives, origan', 
     prices: { t1: 10.50, t2: 12.50, t3: 14.50 }, 
-    category: 'pizzas',
+    category: 'pizzas-tomate',
     subCategory: 'Base Tomate',
-    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
+    image: 'images-produit/pizza/Norvegienne.png'
   },
   { 
     id: '20', 
     name: 'Bolognaise', 
     ingredients: 'viande de boeuf hachée cuisinée, fromages, olives, origan', 
     prices: { t1: 10.50, t2: 12.50, t3: 14.50 }, 
-    category: 'pizzas',
+    category: 'pizzas-tomate',
     subCategory: 'Base Tomate',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -165,7 +166,7 @@ export const MENU_ITEMS: MenuItem[] = [
     name: 'Magret', 
     ingredients: 'magret, champignons, poivre vert, fromages, olives, origan', 
     prices: { t1: 10.50, t2: 12.50, t3: 14.50 }, 
-    category: 'pizzas',
+    category: 'pizzas-tomate',
     subCategory: 'Base Tomate',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -174,7 +175,7 @@ export const MENU_ITEMS: MenuItem[] = [
     name: 'Salaison', 
     ingredients: 'merguez, jambon, lardons, chorizo, fromages, olives, origan', 
     prices: { t1: 10.50, t2: 12.50, t3: 14.50 }, 
-    category: 'pizzas',
+    category: 'pizzas-tomate',
     subCategory: 'Base Tomate',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -183,7 +184,7 @@ export const MENU_ITEMS: MenuItem[] = [
     name: 'Champêtre', 
     ingredients: 'mozzarella, poivrons, chèvre, pesto, olives, origan', 
     prices: { t1: 10.50, t2: 12.50, t3: 14.50 }, 
-    category: 'pizzas',
+    category: 'pizzas-tomate',
     subCategory: 'Base Tomate',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800',
     isVeggie: true
@@ -193,16 +194,16 @@ export const MENU_ITEMS: MenuItem[] = [
     name: 'Calzone', 
     ingredients: 'jambon, champignons, oeuf, fromages, olives, origan', 
     prices: { t1: 10.50, t2: 12.50, t3: 14.50 }, 
-    category: 'pizzas',
+    category: 'pizzas-tomate',
     subCategory: 'Base Tomate',
-    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
+    image: 'images-produit/pizza/Calzone.png'
   },
   { 
     id: '24', 
     name: 'Speciale', 
     ingredients: 'jambon, oignons, oeuf, poivrons, champignons, fromages, olives, origan', 
     prices: { t1: 10.50, t2: 12.50, t3: 14.50 }, 
-    category: 'pizzas',
+    category: 'pizzas-tomate',
     subCategory: 'Base Tomate',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -211,7 +212,7 @@ export const MENU_ITEMS: MenuItem[] = [
     name: 'La Pallice', 
     ingredients: 'jambon, gésiers, champignons, chèvre, fromages, olives, origan', 
     prices: { t1: 10.50, t2: 12.50, t3: 14.50 }, 
-    category: 'pizzas',
+    category: 'pizzas-tomate',
     subCategory: 'Base Tomate',
     image: 'images-produit/pizza/La-Pallice.png'
   },
@@ -220,7 +221,7 @@ export const MENU_ITEMS: MenuItem[] = [
     name: 'Campagnarde', 
     ingredients: 'oignons, champignons, lardons, jambon, fromages, oeuf, olives, origan', 
     prices: { t1: 10.50, t2: 12.50, t3: 14.50 }, 
-    category: 'pizzas',
+    category: 'pizzas-tomate',
     subCategory: 'Base Tomate',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800',
     popular: true
@@ -230,7 +231,7 @@ export const MENU_ITEMS: MenuItem[] = [
     name: 'Delicieuse', 
     ingredients: 'oignons, poulet, poivrons, chorizo, crème fraiche, fromages, olives, origan', 
     prices: { t1: 10.50, t2: 12.50, t3: 14.50 }, 
-    category: 'pizzas',
+    category: 'pizzas-tomate',
     subCategory: 'Base Tomate',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -239,7 +240,7 @@ export const MENU_ITEMS: MenuItem[] = [
     name: 'Parma', 
     ingredients: 'jambon de parme, tomates confites, parmesan, pesto, fromages, olives, origan', 
     prices: { t1: 11.80, t2: 13.80, t3: 15.80 }, 
-    category: 'pizzas',
+    category: 'pizzas-tomate',
     subCategory: 'Base Tomate',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -248,7 +249,7 @@ export const MENU_ITEMS: MenuItem[] = [
     name: 'Cesar', 
     ingredients: 'tenders de poulet, tomates confites, parmesan, salade, fromages, olives, origan, sauce césar', 
     prices: { t1: 11.80, t2: 13.80, t3: 15.80 }, 
-    category: 'pizzas',
+    category: 'pizzas-tomate',
     subCategory: 'Base Tomate',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -259,18 +260,18 @@ export const MENU_ITEMS: MenuItem[] = [
     name: 'Savoureuse', 
     ingredients: 'champignons, gésiers, magret fumé, foie gras, noix, salade, fromages, origan, vinaigre de framboise', 
     prices: { t1: 13.00, t2: 15.00, t3: 17.00 }, 
-    category: 'pizzas',
+    category: 'pizzas-creme',
     subCategory: 'Base Crème',
-    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
+    image: 'images-produit/pizza/Savoureuse.png'
   },
   { 
     id: '31', 
     name: '6 Fromages', 
     ingredients: 'chèvre, cheddar, reblochon, emmental, roquefort, mozzarella, olives, origan', 
     prices: { t1: 11.80, t2: 13.80, t3: 15.80 }, 
-    category: 'pizzas',
+    category: 'pizzas-creme',
     subCategory: 'Base Crème',
-    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800',
+    image: 'images-produit/pizza/6_Fromages.png',
     isVeggie: true
   },
   { 
@@ -278,7 +279,7 @@ export const MENU_ITEMS: MenuItem[] = [
     name: 'Saumon', 
     ingredients: 'pommes de terre, saumon, persillade, fromages, olives, origan', 
     prices: { t1: 11.80, t2: 13.80, t3: 15.80 }, 
-    category: 'pizzas',
+    category: 'pizzas-creme',
     subCategory: 'Base Crème',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -287,7 +288,7 @@ export const MENU_ITEMS: MenuItem[] = [
     name: 'Montagnarde', 
     ingredients: 'jambon de pays, pommes de terre, coppa, jambon, raclette, fromages, olives, origan', 
     prices: { t1: 11.80, t2: 13.80, t3: 15.80 }, 
-    category: 'pizzas',
+    category: 'pizzas-creme',
     subCategory: 'Base Crème',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -296,7 +297,7 @@ export const MENU_ITEMS: MenuItem[] = [
     name: 'Burger', 
     ingredients: 'viande hachée, cheddar, tomates fraîches, salade, oignons, fromages, olives, origan, sauce burger', 
     prices: { t1: 11.80, t2: 13.80, t3: 15.80 }, 
-    category: 'pizzas',
+    category: 'pizzas-creme',
     subCategory: 'Base Crème',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800',
     popular: true
@@ -306,7 +307,7 @@ export const MENU_ITEMS: MenuItem[] = [
     name: 'Maya', 
     ingredients: 'lardons, tomates confites, chèvre, fromages, olives, origan, miel', 
     prices: { t1: 11.80, t2: 13.80, t3: 15.80 }, 
-    category: 'pizzas',
+    category: 'pizzas-creme',
     subCategory: 'Base Crème',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -315,7 +316,7 @@ export const MENU_ITEMS: MenuItem[] = [
     name: 'Forestière', 
     ingredients: "moutarde à l'ancienne, poulet, champignons, fromages, olives, origan", 
     prices: { t1: 11.80, t2: 13.80, t3: 15.80 }, 
-    category: 'pizzas',
+    category: 'pizzas-creme',
     subCategory: 'Base Crème',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -324,7 +325,7 @@ export const MENU_ITEMS: MenuItem[] = [
     name: 'Cannibale', 
     ingredients: 'pommes de terre, poulet, viande hachée, kebab, lardons, chorizo, fromages, olives, origan, sauce samouraï', 
     prices: { t1: 11.80, t2: 13.80, t3: 15.80 }, 
-    category: 'pizzas',
+    category: 'pizzas-creme',
     subCategory: 'Base Crème',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -333,7 +334,7 @@ export const MENU_ITEMS: MenuItem[] = [
     name: 'Chicken', 
     ingredients: 'tenders de poulet, tomates fraiches, cheddar, salade, oignons rouges, fromages, olives, origan, sauce pomme frite', 
     prices: { t1: 11.80, t2: 13.80, t3: 15.80 }, 
-    category: 'pizzas',
+    category: 'pizzas-creme',
     subCategory: 'Base Crème',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800'
   },
@@ -342,7 +343,7 @@ export const MENU_ITEMS: MenuItem[] = [
     name: 'Chevre Miel', 
     ingredients: 'chèvre, miel, noix, fromages, olives, origan', 
     prices: { t1: 10.50, t2: 12.50, t3: 14.50 }, 
-    category: 'pizzas',
+    category: 'pizzas-creme',
     subCategory: 'Base Crème',
     image: 'images-produit/pizza/Chèvre-Miel.png',
     isVeggie: true
@@ -352,7 +353,7 @@ export const MENU_ITEMS: MenuItem[] = [
     name: 'Savoyarde', 
     ingredients: 'pommes de terre, lardons, reblochon, fromages, origan', 
     prices: { t1: 10.50, t2: 12.50, t3: 14.50 }, 
-    category: 'pizzas',
+    category: 'pizzas-creme',
     subCategory: 'Base Crème',
     image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800',
     popular: true
@@ -362,7 +363,7 @@ export const MENU_ITEMS: MenuItem[] = [
     name: '4 Fromages', 
     ingredients: 'chèvre, roquefort, mozzarella, emmental, olives, origan', 
     prices: { t1: 10.50, t2: 12.50, t3: 14.50 }, 
-    category: 'pizzas',
+    category: 'pizzas-creme',
     subCategory: 'Base Crème',
     image: 'images-produit/pizza/4-Fromages.png',
     popular: true,
@@ -373,7 +374,7 @@ export const MENU_ITEMS: MenuItem[] = [
     name: 'Poularde', 
     ingredients: 'pommes de terre, poulet, oignons, oeuf, fromages, olives, origan', 
     prices: { t1: 10.50, t2: 12.50, t3: 14.50 }, 
-    category: 'pizzas',
+    category: 'pizzas-creme',
     subCategory: 'Base Crème',
     image: 'images-produit/pizza/Poularde.png'
   },
@@ -382,7 +383,7 @@ export const MENU_ITEMS: MenuItem[] = [
     name: 'Kebab', 
     ingredients: 'poivrons, oignons, viande à kebab, fromages, olives, origan, sauce blanche', 
     prices: { t1: 11.00, t2: 13.00, t3: 15.00 }, 
-    category: 'pizzas',
+    category: 'pizzas-creme',
     subCategory: 'Base Crème',
     image: 'images-produit/pizza/Kebab.png'
   },
@@ -391,7 +392,7 @@ export const MENU_ITEMS: MenuItem[] = [
     name: 'Texane', 
     ingredients: 'merguez, chorizo, poulet, viande hachée, oignons rouges, fromages, olives, origan', 
     prices: { t1: 11.00, t2: 13.00, t3: 15.00 }, 
-    category: 'pizzas',
+    category: 'pizzas-creme',
     subCategory: 'Base Crème',
     image: 'images-produit/pizza/Texane.png'
   },

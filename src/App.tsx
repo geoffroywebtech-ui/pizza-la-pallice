@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+
 import { ShoppingBag } from 'lucide-react';
 import { MenuItem, CartItem, Order } from './types';
 import Navbar from './components/Navbar';
@@ -16,18 +17,25 @@ import RestaurantDashboard from './components/RestaurantDashboard';
 import CustomerHistoryModal from './components/CustomerHistoryModal';
 import { Promotion } from './types';
 import { supabase } from './lib/supabase';
+import { MENU_ITEMS } from './data/menu';
 
 export default function App() {
+
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [isAdminView, setIsAdminView] = useState(false);
+  const [isAdminAuthOpen, setIsAdminAuthOpen] = useState(false);
+  const [adminCode, setAdminCode] = useState('');
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+
   const [promotions, setPromotions] = useState<Promotion[]>([
     { id: '1', code: 'PALLICE10', description: '10% sur votre première commande', discount: 0.1, active: true, type: 'percentage' },
     { id: '2', code: 'PIZZA20', description: '5€ de réduction sur les pizzas larges', discount: 5, active: true, type: 'fixed' }
   ]);
   const [orders, setOrders] = useState<Order[]>([]);
+  const [menuItems, setMenuItems] = useState<MenuItem[]>(MENU_ITEMS);
+
 
   // Charger les commandes initiales depuis Supabase
   useEffect(() => {
@@ -79,6 +87,14 @@ export default function App() {
             return [newOrder, ...prev];
           });
           
+          // Notification système
+          if (Notification.permission === 'granted') {
+             new Notification('Nouvelle commande !', {
+               body: `${newOrder.customer.name} vient de commander (${newOrder.total.toFixed(2)}€)`,
+               icon: '/pizza-icon.png'
+             });
+          }
+
           // Petit bruit si on est sur la vue admin
           if (document.hidden === false) {
              try {
@@ -86,6 +102,7 @@ export default function App() {
                 audio.play();
              } catch (e) { console.log("Audio play blocked"); }
           }
+
         }
       )
       .on(
@@ -101,13 +118,51 @@ export default function App() {
       )
       .subscribe();
 
+    const fetchStock = async () => {
+      const { data, error } = await supabase
+        .from('stock')
+        .select('*');
+      
+      if (data && !error) {
+        setMenuItems(prev => prev.map(item => {
+          const remote = data.find(d => d.id === item.id);
+          return remote ? { ...item, isAvailable: remote.is_available } : { ...item, isAvailable: true };
+        }));
+      }
+    };
+    
+    fetchStock();
+
+    // Écouter les changements de stock
+    const stockChannel = supabase
+      .channel('stock-changes')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'stock' },
+        (payload) => {
+          const updated = payload.new as any;
+          setMenuItems(prev => prev.map(item => 
+            item.id === updated.id ? { ...item, isAvailable: updated.is_available } : item
+          ));
+        }
+      )
+      .subscribe();
+
+    // Demander la permission pour les notifications
+    if (Notification.permission === 'default') {
+      Notification.requestPermission();
+    }
+
     return () => {
       supabase.removeChannel(channel);
+      supabase.removeChannel(stockChannel);
     };
+
+
   }, []);
 
   useEffect(() => {
-    (window as any).toggleAdmin = () => setIsAdminView(prev => !prev);
+    (window as any).toggleAdmin = () => setIsAdminAuthOpen(true);
   }, []);
 
   const addToCart = (item: MenuItem, size: string, customName?: string) => {
@@ -206,19 +261,51 @@ export default function App() {
     }
   };
 
+  const toggleItemAvailability = async (itemId: string, isAvailable: boolean) => {
+    // Maj locale optimiste
+    setMenuItems(prev => prev.map(item => item.id === itemId ? { ...item, isAvailable } : item));
+    
+    // Maj distante (upsert dans une table 'stock' car MENU_ITEMS est statique en code)
+    const { error } = await supabase
+      .from('stock')
+      .upsert({ id: itemId, is_available: isAvailable });
+      
+    if (error) console.error("Erreur MAJ Stock:", error);
+  };
+
   if (isAdminView) return (
+
     <RestaurantDashboard 
       orders={orders} 
       promotions={promotions}
+      menuItems={menuItems}
       onUpdateStatus={updateOrderStatus} 
       onUpdatePromotions={setPromotions}
+      onToggleAvailability={toggleItemAvailability}
       onExit={() => setIsAdminView(false)} 
     />
+
   );
+
+  const handleAdminAuth = () => {
+    if (adminCode.toLowerCase() === 'pizzza') {
+      setIsAdminView(true);
+      setIsAdminAuthOpen(false);
+      setAdminCode('');
+    } else {
+      alert("Code incorrect");
+      setAdminCode('');
+    }
+  };
+
 
   return (
     <div className="min-h-screen bg-white font-sans selection:bg-brand-yellow selection:text-brand-green">
-      <Navbar onOpenHistory={() => setIsHistoryOpen(true)} />
+      <Navbar 
+        onOpenHistory={() => setIsHistoryOpen(true)} 
+        onLogoClick={() => setIsAdminAuthOpen(true)}
+      />
+
       
       {cart.length > 0 && !isCartOpen && (
         <motion.button 
@@ -250,7 +337,13 @@ export default function App() {
       )}
 
       <Hero promotions={promotions} />
-      <MenuSection onAddToCart={addToCart} onUpdateQuantity={updateQuantity} cart={cart} />
+      <MenuSection 
+        onAddToCart={addToCart} 
+        onUpdateQuantity={updateQuantity} 
+        cart={cart} 
+        menuItems={menuItems}
+      />
+
       <IngredientsSection />
       <DistributorSection />
       <InfoSection />
@@ -279,6 +372,53 @@ export default function App() {
         orders={orders} 
         promotions={promotions} 
       />
+
+      {/* Modal Authentification Admin */}
+      <AnimatePresence>
+        {isAdminAuthOpen && (
+          <div className="fixed inset-0 z-[200] flex items-center justify-center p-6 sm:p-0">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsAdminAuthOpen(false)}
+              className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+            />
+             <motion.div 
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="relative bg-white w-full max-w-sm p-8 rounded-[2.5rem] border border-zinc-200 shadow-2xl"
+            >
+              <h3 className="text-2xl font-serif font-black text-brand-green mb-6 text-center">Accès <span className="text-brand-yellow drop-shadow-sm">Cuisine</span></h3>
+              <div className="space-y-4">
+                <input 
+                  autoFocus
+                  type="password"
+                  placeholder="Code d'accès"
+                  value={adminCode}
+                  onChange={(e) => setAdminCode(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleAdminAuth()}
+                  className="w-full bg-zinc-50 border border-zinc-100 rounded-2xl px-6 py-4 text-zinc-900 text-center text-2xl tracking-[0.5em] focus:outline-none focus:border-brand-green transition-all shadow-inner"
+                />
+                <button 
+                  onClick={handleAdminAuth}
+                  className="w-full bg-brand-green text-white py-4 rounded-2xl font-black uppercase tracking-widest hover:bg-zinc-900 transition-all shadow-lg shadow-brand-green/20"
+                >
+                  Entrer
+                </button>
+                <button 
+                  onClick={() => setIsAdminAuthOpen(false)}
+                  className="w-full text-zinc-400 text-[10px] font-black uppercase tracking-[0.2em] pt-2 hover:text-zinc-600 transition-colors"
+                >
+                  Annuler l'accès
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
+
   );
 }

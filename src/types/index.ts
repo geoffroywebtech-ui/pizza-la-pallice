@@ -13,6 +13,7 @@ export interface MenuItem {
   image: string;
   popular?: boolean;
   isVeggie?: boolean;
+  isAvailable?: boolean;
 }
 
 export interface CartItem {

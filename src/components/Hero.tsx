@@ -18,23 +18,25 @@ const Hero: React.FC<HeroProps> = ({ promotions }) => {
         <img 
           src="https://images.unsplash.com/photo-1541745537411-b8046dc6d66c?auto=format&fit=crop&q=80&w=1920" 
           alt="Pizza artisanale"
-          className="w-full h-full object-cover scale-105"
+          className="w-full h-full object-cover"
+          loading="eager"
+          // @ts-ignore
+          fetchpriority="high"
         />
-        <div className="absolute inset-0 bg-brand-green/70 backdrop-grayscale-[0.2]" />
+
+        <div className="absolute inset-0 bg-brand-green/80 backdrop-blur-[2px]" />
       </div>
 
-      <div className="relative z-10 text-center px-6 max-w-4xl">
+      <div className="relative z-10 text-center px-6 max-w-5xl pt-16 mt-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <span className="inline-block px-4 py-1 rounded-full bg-brand-yellow text-brand-green text-xs font-black uppercase tracking-[0.2em] mb-6 shadow-xl">
-            Artisanal & Local
-          </span>
-          <h1 className="text-6xl md:text-8xl font-serif text-white font-bold leading-[0.9] mb-8 tracking-tighter">
+
+          <h1 className="text-5xl md:text-8xl font-serif text-white font-black leading-[1.1] md:leading-[0.95] mb-8 tracking-tight">
             L'excellence de la <br />
-            <span className="italic text-brand-yellow">Pizza</span> à La Rochelle
+            <span className="italic text-brand-yellow drop-shadow-sm">Pizza</span> à La Rochelle
           </h1>
           <p className="text-white/90 text-lg md:text-xl max-w-2xl mx-auto mb-10 font-medium leading-relaxed">
             Pâte pétrie à la main, ingrédients frais du marché et passion italienne. 
