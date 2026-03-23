@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { X, MapPin, CheckCircle2, Tag, ChevronDown, ChevronUp } from 'lucide-react';
+import { X, MapPin, CheckCircle2, Tag, ChevronDown, ChevronUp, Mail } from 'lucide-react';
 import { CartItem, Promotion } from '../types';
 
 interface CheckoutModalProps {
@@ -21,7 +21,7 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
   onOrderPlaced 
 }) => {
   const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState({ name: '', phone: '', address: '', notes: '' });
+  const [formData, setFormData] = useState({ name: '', phone: '', address: '', email: '', notes: '' });
   const [promoCode, setPromoCode] = useState('');
   const [appliedPromo, setAppliedPromo] = useState<Promotion | null>(null);
   const [isLocating, setIsLocating] = useState(false);
@@ -89,14 +89,14 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
   if (!isOpen && !isAnimating) return null;
 
   return (
-    <div className={`fixed inset-0 z-[300] flex items-center justify-center p-4 overflow-y-auto transition-all duration-300 pointer-events-none ${isOpen && isAnimating ? 'opacity-100' : 'opacity-0'}`}>
+    <div className={`fixed inset-0 z-[300] flex items-end sm:items-center justify-center p-0 sm:p-4 overflow-y-auto transition-all duration-300 pointer-events-none ${isOpen && isAnimating ? 'opacity-100' : 'opacity-0'}`}>
       
       {/* Background flouté vert */}
       <div className="absolute inset-0 bg-brand-green/90 backdrop-blur-md pointer-events-auto" onClick={onClose} />
       
       {/* Modal Content */}
       <div 
-        className={`bg-white w-full max-w-xl rounded-[3rem] shadow-2xl text-zinc-900 relative my-auto max-h-[90vh] flex flex-col overflow-hidden pointer-events-auto transition-transform duration-400 ease-out transform ${isOpen && isAnimating ? 'scale-100 translate-y-0' : 'scale-90 translate-y-8'}`}
+        className={`bg-white w-full max-w-xl rounded-t-3xl sm:rounded-[3rem] shadow-2xl text-zinc-900 relative my-auto max-h-[90dvh] flex flex-col overflow-hidden pointer-events-auto transition-transform duration-400 ease-out transform ${isOpen && isAnimating ? 'scale-100 translate-y-0' : 'scale-90 translate-y-8'}`}
       >
             <button 
               onClick={onClose} 
@@ -143,6 +143,10 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
                 <div className="space-y-3">
                   <input required placeholder="Nom Prénom" className="w-full p-4 bg-zinc-50 rounded-xl border border-zinc-100 focus:border-brand-green outline-none font-bold text-sm" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} />
                   <input required type="tel" placeholder="Téléphone (ex: 06...)" className="w-full p-4 bg-zinc-50 rounded-xl border border-zinc-100 focus:border-brand-green outline-none font-bold text-sm" value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} />
+                  <div className="relative">
+                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-300" size={16} />
+                    <input type="email" placeholder="Email (optionnel — pour suivre votre commande)" className="w-full p-4 pl-12 bg-zinc-50 rounded-xl border border-zinc-100 focus:border-brand-green outline-none font-bold text-sm" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} />
+                  </div>
                   <div className="relative">
                     <input required placeholder="Adresse complète..." className="w-full p-4 bg-zinc-50 rounded-xl border border-zinc-100 pr-24 focus:border-brand-green outline-none font-bold text-sm" value={formData.address} onChange={e => setFormData({ ...formData, address: e.target.value })} />
                     <button type="button" onClick={handleGeolocation} disabled={isLocating} className="absolute right-3 top-1/2 -translate-y-1/2 text-brand-green font-black text-[9px] uppercase tracking-widest flex items-center gap-1 border border-brand-green/20 px-2 py-1 rounded-lg hover:bg-brand-green hover:text-white transition-all">
@@ -195,9 +199,18 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
                   <h3 className="text-4xl font-serif font-bold">C'est parti !</h3>
                   <p className="text-zinc-500 mt-2 font-medium">Merci {formData.name}, votre commande est en préparation.</p>
                 </div>
-                <div className="bg-zinc-50 p-6 rounded-3xl w-full border border-dashed border-zinc-200">
-                  <p className="text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2">Petit rappel</p>
+                <div className="bg-zinc-50 p-6 rounded-3xl w-full border border-dashed border-zinc-200 space-y-3">
+                  <p className="text-xs font-bold text-zinc-400 uppercase tracking-widest">Petit rappel</p>
                   <p className="text-sm font-bold text-zinc-700">Le paiement se fait uniquement en espèces lors de la livraison.</p>
+                  {formData.email && (
+                    <div className="flex items-start gap-3 bg-brand-green/5 border border-brand-green/20 rounded-2xl p-4 mt-2">
+                      <Mail size={16} className="text-brand-green shrink-0 mt-0.5" />
+                      <div>
+                        <p className="text-xs font-black text-brand-green uppercase tracking-widest mb-1">Lien de suivi envoyé !</p>
+                        <p className="text-xs text-zinc-500 font-medium">Consultez <span className="font-black text-zinc-700">{formData.email}</span> pour suivre votre commande en temps réel.</p>
+                      </div>
+                    </div>
+                  )}
                 </div>
                 <button onClick={onClose} className="bg-brand-green text-white px-12 py-5 rounded-2xl font-black text-sm uppercase tracking-widest shadow-xl transition-all hover:bg-brand-yellow hover:text-brand-green">Retour à l'accueil</button>
               </div>

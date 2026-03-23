@@ -2,13 +2,37 @@
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pizza La Pallice - Accueil</title>
-    <script type="module" crossorigin src="/pizza-la-pallice/assets/index-DYit6nWq.js"></script>
-    <link rel="stylesheet" crossorigin href="/pizza-la-pallice/assets/index-B7Z3t0TN.css">
+    <!-- viewport-fit=cover = essentiel pour iPhone notch / Dynamic Island -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Pizza La Pallice - Pizzas Artisanales à La Rochelle</title>
+    <meta name="description" content="Pizzas artisanales à La Rochelle — pâte pétrie à la main, ingrédients frais du marché. Commandez en ligne, livraison rapide." />
+
+    <!-- Couleur de la barre du navigateur (Android Chrome + Safari macOS) -->
+    <meta name="theme-color" content="#1B5E20" />
+
+    <!-- PWA manifest -->
+    <link rel="manifest" href="/pizza-la-pallice/manifest.webmanifest" />
+
+    <!-- iOS PWA : ces trois balises rendent l'app native sur iPhone/iPad -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="La Pallice" />
+    <link rel="apple-touch-icon" href="/pizza-la-pallice/icons/apple-touch-icon.png" />
+
+    <!-- Empêche iOS Safari de transformer les numéros en liens bleus -->
+    <meta name="format-detection" content="telephone=no" />
+
+    <!-- Open Graph (partage WhatsApp / réseaux sociaux) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Pizza La Pallice" />
+    <meta property="og:description" content="Pizzas artisanales à La Rochelle — commandez en ligne" />
+    <meta property="og:url" content="https://geoffroywebtech-ui.github.io/pizza-la-pallice/" />
+    <meta property="og:image" content="https://geoffroywebtech-ui.github.io/pizza-la-pallice/icons/icon-512x512.png" />
+    <meta property="og:locale" content="fr_FR" />
+    <script type="module" crossorigin src="/pizza-la-pallice/assets/index-BrtOCqJ3.js"></script>
+    <link rel="stylesheet" crossorigin href="/pizza-la-pallice/assets/index-CZS38xno.css">
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"></div>
   </body>
 </html>
-

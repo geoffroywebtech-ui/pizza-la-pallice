@@ -39,8 +39,8 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenHistory, onLogoClick }) => {
 
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-white/95 backdrop-blur-md border-b border-zinc-100 ${isScrolled ? 'py-2' : 'py-3'}`}>
-      <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-white/95 backdrop-blur-md border-b border-zinc-100 pt-safe ${isScrolled ? 'py-2' : 'py-3'}`}>
+      <div className="max-w-7xl mx-auto px-6 px-safe flex justify-between items-center">
         <div 
           className="flex items-center gap-2 cursor-pointer group select-none relative"
           onMouseDown={startLongPress}
@@ -114,8 +114,8 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenHistory, onLogoClick }) => {
           </a>
         </div>
 
-        <button 
-          className="md:hidden"
+        <button
+          className="md:hidden w-11 h-11 flex items-center justify-center"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
           {isMobileMenuOpen ? (

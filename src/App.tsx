@@ -15,6 +15,7 @@ import CartModal from './components/CartModal';
 import CheckoutModal from './components/CheckoutModal';
 import RestaurantDashboard from './components/RestaurantDashboard';
 import CustomerHistoryModal from './components/CustomerHistoryModal';
+import DeliveryTrackerModal from './components/DeliveryTrackerModal';
 import { Promotion } from './types';
 import { supabase } from './lib/supabase';
 import { MENU_ITEMS } from './data/menu';
@@ -28,6 +29,8 @@ export default function App() {
   const [isAdminAuthOpen, setIsAdminAuthOpen] = useState(false);
   const [adminCode, setAdminCode] = useState('');
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+  const [currentUserEmail, setCurrentUserEmail] = useState<string | null>(null);
+  const [trackingOrderId, setTrackingOrderId] = useState<string | null>(null);
 
   const [promotions, setPromotions] = useState<Promotion[]>([
     { id: '1', code: 'PALLICE10', description: '10% sur votre première commande', discount: 0.1, active: true, type: 'percentage' },
@@ -52,7 +55,8 @@ export default function App() {
           items: d.items,
           total: d.total,
           status: d.status,
-          timestamp: new Date(d.created_at).getTime()
+          timestamp: new Date(d.created_at).getTime(),
+          deliverer_location: d.deliverer_location ?? null
         }));
         setOrders(formattedOrders);
       }
@@ -78,7 +82,8 @@ export default function App() {
             items: newOrderRow.items,
             total: newOrderRow.total,
             status: newOrderRow.status,
-            timestamp: new Date(newOrderRow.created_at).getTime()
+            timestamp: new Date(newOrderRow.created_at).getTime(),
+            deliverer_location: null
           };
           
           setOrders((prev) => {
@@ -113,7 +118,11 @@ export default function App() {
           table: 'orders',
         },
         (payload) => {
-          setOrders((prev) => prev.map(o => o.id === payload.new.id ? { ...o, status: payload.new.status } : o));
+          setOrders((prev) => prev.map(o =>
+            o.id === payload.new.id
+              ? { ...o, status: payload.new.status, deliverer_location: payload.new.deliverer_location ?? null }
+              : o
+          ));
         }
       )
       .subscribe();
@@ -153,9 +162,22 @@ export default function App() {
       Notification.requestPermission();
     }
 
+    // Auth state — magic link
+    const { data: { subscription: authSub } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user?.email) {
+        setCurrentUserEmail(session.user.email);
+        setIsHistoryOpen(true);
+      }
+    });
+
+    // ?track= URL param — ouvrir le tracker directement
+    const trackId = new URLSearchParams(window.location.search).get('track');
+    if (trackId) setTrackingOrderId(trackId);
+
     return () => {
       supabase.removeChannel(channel);
       supabase.removeChannel(stockChannel);
+      authSub.unsubscribe();
     };
 
 
@@ -240,6 +262,14 @@ export default function App() {
       });
     }
 
+    // Magic link si email fourni
+    if (formData.email) {
+      await supabase.auth.signInWithOtp({
+        email: formData.email,
+        options: { emailRedirectTo: window.location.origin + '/pizza-la-pallice/' }
+      });
+    }
+
     try {
       const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
       audio.play();
@@ -319,7 +349,8 @@ export default function App() {
             duration: 0.4
           }}
           onClick={() => setIsCartOpen(true)} 
-          className="fixed bottom-6 right-6 lg:bottom-12 lg:right-12 z-[150] bg-brand-green text-white p-5 rounded-full shadow-[0_20px_60px_rgba(34,197,94,0.4)] flex items-center gap-4 hover:scale-105 active:scale-95 transition-all border-4 border-white"
+          className="fixed z-[150] bg-brand-green text-white p-5 rounded-full shadow-[0_20px_60px_rgba(34,197,94,0.4)] flex items-center gap-4 hover:scale-105 active:scale-95 transition-all border-4 border-white lg:bottom-12 lg:right-12"
+          style={{ bottom: 'max(1.5rem, env(safe-area-inset-bottom))', right: 'max(1.5rem, env(safe-area-inset-right))' }}
         >
           <div className="relative">
             <ShoppingBag size={24} />
@@ -366,12 +397,20 @@ export default function App() {
         onOrderPlaced={placeOrder} 
       />
 
-      <CustomerHistoryModal 
-        isOpen={isHistoryOpen} 
-        onClose={() => setIsHistoryOpen(false)} 
-        orders={orders} 
-        promotions={promotions} 
+      <CustomerHistoryModal
+        isOpen={isHistoryOpen}
+        onClose={() => setIsHistoryOpen(false)}
+        orders={orders}
+        promotions={promotions}
+        currentUserEmail={currentUserEmail}
       />
+
+      {trackingOrderId && (() => {
+        const order = orders.find(o => o.id === trackingOrderId);
+        return order ? (
+          <DeliveryTrackerModal order={order} onClose={() => setTrackingOrderId(null)} />
+        ) : null;
+      })()}
 
       {/* Modal Authentification Admin */}
       <AnimatePresence>

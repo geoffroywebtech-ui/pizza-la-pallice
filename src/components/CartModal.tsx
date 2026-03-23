@@ -43,7 +43,7 @@ const CartModal: React.FC<CartModalProps> = ({
       
       {/* Panneau du panier */}
       <div 
-        className={`relative h-full w-full max-w-md bg-white shadow-2xl flex flex-col pointer-events-auto transition-transform duration-400 ease-out transform ${isOpen && isAnimating ? 'translate-x-0' : 'translate-x-full'}`}
+        className={`relative h-full w-full sm:max-w-md bg-white shadow-2xl flex flex-col pointer-events-auto transition-transform duration-400 ease-out transform ${isOpen && isAnimating ? 'translate-x-0' : 'translate-x-full'}`}
       >
             <div className="p-8 border-b border-zinc-100 flex justify-between items-center">
               <div className="flex items-center gap-4">
@@ -104,7 +104,7 @@ const CartModal: React.FC<CartModalProps> = ({
               })}
             </div>
             {cart.length > 0 && (
-              <div className="p-6 sm:p-8 border-t border-zinc-100 bg-zinc-50 space-y-6">
+              <div className="p-6 sm:p-8 pb-[max(1.5rem,env(safe-area-inset-bottom))] border-t border-zinc-100 bg-zinc-50 space-y-6">
                 <div className="flex justify-between items-end">
                   <span className="font-black text-zinc-400 uppercase tracking-widest text-xs">Total à régler</span>
                   <span className="text-4xl font-serif font-bold text-brand-green">{total.toFixed(2)}€</span>

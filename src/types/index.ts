@@ -40,12 +40,14 @@ export interface Order {
     name: string;
     phone: string;
     address: string;
+    email?: string;
     notes?: string;
   };
   items: CartItem[];
   total: number;
   status: 'new' | 'preparing' | 'delivering' | 'completed';
   timestamp: number;
+  deliverer_location?: { lat: number; lng: number; updated_at: number } | null;
 }
 
 export interface Category {

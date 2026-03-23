@@ -1,8 +1,9 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Pizza, X, Phone, MapPin, Plus, ShoppingBag, Clock } from 'lucide-react';
+import { Pizza, X, Phone, MapPin, Plus, ShoppingBag, Clock, Navigation, MessageCircle, Copy, Check } from 'lucide-react';
 import { Order, Promotion, MenuItem } from '../types';
+import { supabase } from '../lib/supabase';
 
 interface RestaurantDashboardProps {
   orders: Order[];
@@ -14,17 +15,86 @@ interface RestaurantDashboardProps {
   onExit: () => void;
 }
 
-const RestaurantDashboard: React.FC<RestaurantDashboardProps> = ({ 
-  orders, 
-  promotions, 
+const RestaurantDashboard: React.FC<RestaurantDashboardProps> = ({
+  orders,
+  promotions,
   menuItems,
-  onUpdateStatus, 
-  onUpdatePromotions, 
+  onUpdateStatus,
+  onUpdatePromotions,
   onToggleAvailability,
-  onExit 
+  onExit
 }) => {
   const [activeTab, setActiveTab] = useState<'orders' | 'promos' | 'inventory'>('orders');
   const [filter, setFilter] = useState<'all' | Order['status']>('all');
+
+  // GPS tracking: watchId per orderId
+  const watchRefs = useRef<Record<string, number>>({});
+
+  const startTracking = (orderId: string) => {
+    if (watchRefs.current[orderId]) return; // already tracking
+    if (!navigator.geolocation) return;
+    const watchId = navigator.geolocation.watchPosition(
+      async (pos) => {
+        await supabase.from('orders').update({
+          deliverer_location: {
+            lat: pos.coords.latitude,
+            lng: pos.coords.longitude,
+            updated_at: Date.now(),
+          }
+        }).eq('id', orderId);
+      },
+      (err) => console.error('GPS error:', err),
+      { enableHighAccuracy: true, maximumAge: 5000, timeout: 10000 }
+    );
+    watchRefs.current[orderId] = watchId;
+  };
+
+  const stopTracking = async (orderId: string) => {
+    if (watchRefs.current[orderId]) {
+      navigator.geolocation.clearWatch(watchRefs.current[orderId]);
+      delete watchRefs.current[orderId];
+    }
+    await supabase.from('orders').update({ deliverer_location: null }).eq('id', orderId);
+  };
+
+  // Stop tracking when component unmounts
+  useEffect(() => {
+    return () => {
+      Object.values(watchRefs.current).forEach((watchId) => {
+        navigator.geolocation.clearWatch(watchId as number);
+      });
+    };
+  }, []);
+
+  const handleSendDelivering = async (orderId: string) => {
+    onUpdateStatus(orderId, 'delivering');
+    startTracking(orderId);
+  };
+
+  const handleMarkDelivered = async (orderId: string) => {
+    onUpdateStatus(orderId, 'completed');
+    await stopTracking(orderId);
+  };
+
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  const buildTrackingMessage = (order: Order) => {
+    const url = `https://geoffroywebtech-ui.github.io/pizza-la-pallice/?track=${order.id}`;
+    return `🍕 Votre commande Pizza La Pallice est en route !\nSuivez votre livreur en direct : ${url}\nMerci de votre confiance 🙏`;
+  };
+
+  const handleWhatsApp = (order: Order) => {
+    const phone = order.customer.phone.replace(/\s/g, '').replace(/^0/, '33');
+    const msg = buildTrackingMessage(order);
+    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+  };
+
+  const handleCopy = async (order: Order) => {
+    await navigator.clipboard.writeText(buildTrackingMessage(order));
+    setCopiedId(order.id);
+    setTimeout(() => setCopiedId(null), 2000);
+  };
+
   const stats = {
     new: orders.filter(o => o.status === 'new').length,
     preparing: orders.filter(o => o.status === 'preparing').length,
@@ -37,7 +107,7 @@ const RestaurantDashboard: React.FC<RestaurantDashboardProps> = ({
 
   // Mettre à jour 'now' chaque minute pour les compteurs
   React.useEffect(() => {
-    const timer = setInterval(() => setNow(Date.now()), 60000);
+    const timer = setInterval(() => setNow(Date.now()), 10000);
     return () => clearInterval(timer);
   }, []);
 
@@ -56,12 +126,21 @@ const RestaurantDashboard: React.FC<RestaurantDashboardProps> = ({
     return `${diff} min`;
   };
 
+  const getTimerColor = (timestamp: number) => {
+    const diff = Math.floor((now - timestamp) / 60000);
+    if (diff < 5) return 'bg-green-100 text-green-700 border-green-200';
+    if (diff < 10) return 'bg-brand-yellow/20 text-amber-700 border-brand-yellow/40';
+    return 'bg-red-100 text-red-600 border-red-200';
+  };
+
+  const shouldPulse = (timestamp: number) => Math.floor((now - timestamp) / 60000) >= 10;
+
   const filteredOrders = filter === 'all' ? orders : orders.filter(o => o.status === filter);
 
   return (
-    <div className="min-h-screen bg-zinc-50 text-zinc-900 font-sans p-4 sm:p-8">
+    <div className="h-dvh bg-zinc-50 text-zinc-900 font-sans flex flex-col overflow-hidden">
       {/* Header */}
-      <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center mb-8 bg-white p-6 rounded-3xl shadow-sm border border-zinc-200 gap-6">
+      <div className="flex-shrink-0 flex flex-col sm:flex-row justify-between items-center bg-white px-4 py-3 sm:px-6 border-b border-zinc-200 gap-3">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 bg-brand-green rounded-xl flex items-center justify-center text-white shadow-lg shadow-brand-green/20">
             <Pizza size={24} />
@@ -100,9 +179,9 @@ const RestaurantDashboard: React.FC<RestaurantDashboardProps> = ({
         </button>
       </div>
 
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-8">
+      <div className="flex-1 overflow-hidden flex flex-col lg:flex-row gap-3 p-3">
         {activeTab === 'orders' && (
-          <div className="lg:col-span-1 space-y-2 flex flex-row lg:flex-col overflow-x-auto gap-2 pb-4 lg:pb-0">
+          <div className="lg:w-44 flex-shrink-0 flex flex-row lg:flex-col overflow-x-auto lg:overflow-y-auto gap-1 pb-2 lg:pb-0">
             {[
               { id: 'all', label: 'Toutes' },
               { id: 'new', label: 'Nouveau' },
@@ -139,82 +218,104 @@ const RestaurantDashboard: React.FC<RestaurantDashboardProps> = ({
           </div>
         )}
         
-        <div className={activeTab === 'orders' ? "lg:col-span-3" : "lg:col-span-4"}>
+        <div className="flex-1 overflow-hidden min-h-0 flex flex-col">
           <AnimatePresence mode="wait">
             {activeTab === 'orders' ? (
-              <motion.div 
+              <div className="flex-1 overflow-y-auto min-h-0">
+              <motion.div
                 key="orders-grid"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="grid grid-cols-1 md:grid-cols-2 gap-6"
+                className="grid gap-1.5 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6"
               >
                 {filteredOrders.map(order => (
-                  <motion.div 
-                    key={order.id} 
+                  <motion.div
+                    key={order.id}
                     layout
-                    className="bg-white p-6 rounded-3xl border border-zinc-200 shadow-sm space-y-5 relative overflow-hidden flex flex-col"
+                    className="bg-white p-2.5 rounded-xl border border-zinc-200 shadow-sm space-y-2 relative overflow-hidden flex flex-col"
                   >
-                    <div className={`absolute top-0 left-0 right-0 h-1.5 ${
+                    <div className={`absolute top-0 left-0 right-0 h-1 ${
                       order.status === 'new' ? 'bg-red-500' :
                       order.status === 'preparing' ? 'bg-brand-yellow' :
                       order.status === 'delivering' ? 'bg-blue-500' : 'bg-brand-green'
                     }`} />
 
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="text-[10px] text-zinc-400 font-black tracking-tighter uppercase">ID: {order.id.slice(0, 8)}</span>
-                          <span className="flex items-center gap-1 text-[9px] text-zinc-400 font-bold">
-                            <Clock size={10} /> {new Date(order.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                          </span>
+                    <div className="flex justify-between items-start pt-0.5">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-1 mb-0.5">
+                          <span className="text-[8px] text-zinc-400 font-black tracking-tighter uppercase">ID: {order.id.slice(0, 8)}</span>
                         </div>
-                        <h4 className="text-xl font-black text-zinc-900 leading-none">{order.customer.name}</h4>
+                        <h4 className="text-xs font-black text-zinc-900 leading-none truncate">{order.customer.name}</h4>
                       </div>
-                      <div className="text-right">
-                        <span className="text-xl font-black text-brand-green tracking-tighter">{order.total.toFixed(2)}€</span>
+                      <div className="text-right shrink-0 ml-1">
+                        <span className="text-xs font-black text-brand-green tracking-tighter">{order.total.toFixed(2)}€</span>
                       </div>
                     </div>
 
-                    <div className="p-4 bg-zinc-50 rounded-2xl border border-zinc-100 space-y-2">
-                       <p className="text-zinc-600 text-xs font-bold flex items-center gap-2">
-                        <Phone size={14} className="text-zinc-400" /> {order.customer.phone}
+                    {(order.status === 'new' || order.status === 'preparing') && (
+                      <motion.div
+                        animate={shouldPulse(order.timestamp) ? { scale: [1, 1.05, 1] } : {}}
+                        transition={{ repeat: Infinity, duration: 1.2 }}
+                        className={`flex items-center gap-1 px-1.5 py-0.5 rounded-lg border text-[8px] font-black w-fit ${getTimerColor(order.timestamp)}`}
+                      >
+                        <Clock size={8} className="shrink-0" />
+                        {getDuration(order.timestamp)}
+                      </motion.div>
+                    )}
+
+                    <div className="p-2 bg-zinc-50 rounded-xl border border-zinc-100 space-y-1">
+                      <p className="text-zinc-600 text-[9px] font-bold flex items-center gap-1">
+                        <Phone size={10} className="text-zinc-400 shrink-0" /> {order.customer.phone}
                       </p>
-                      <p className="text-zinc-600 text-xs font-medium flex items-start gap-2">
-                        <MapPin size={14} className="text-brand-yellow shrink-0 mt-0.5" /> {order.customer.address}
+                      <p className="text-zinc-600 text-[9px] font-medium flex items-start gap-1">
+                        <MapPin size={10} className="text-brand-yellow shrink-0 mt-0.5" /> <span className="truncate">{order.customer.address}</span>
                       </p>
                     </div>
 
-                    <div className="space-y-3 flex-1">
+                    <div className="space-y-1 flex-1">
                       {order.items.map((item, i) => (
-                        <div key={i} className="flex flex-col border-b border-zinc-100 pb-3 last:border-0 last:pb-0">
-                          <div className="flex justify-between items-center text-sm">
-                            <span className="font-black text-zinc-800">{item.quantity}x {item.name}</span>
-                            <span className="px-2 py-0.5 bg-zinc-100 rounded text-[9px] font-black uppercase text-zinc-500">{item.size}</span>
+                        <div key={i} className="flex flex-col border-b border-zinc-100 pb-1 last:border-0 last:pb-0">
+                          <div className="flex justify-between items-center">
+                            <span className="text-[10px] font-black text-zinc-800">{item.quantity}x {item.name}</span>
+                            <span className="px-1 py-0.5 bg-zinc-100 rounded text-[8px] font-black uppercase text-zinc-500">{item.size}</span>
                           </div>
                           {item.customName && (
-                            <div className="text-[9px] text-brand-green font-black uppercase tracking-[0.2em] mt-1.5 flex items-center gap-2">
-                              <span className="w-1 h-1 bg-brand-yellow rounded-full" /> Pour : {item.customName}
+                            <div className="text-[8px] text-brand-green font-black uppercase tracking-[0.15em] mt-0.5 flex items-center gap-1">
+                              <span className="w-1 h-1 bg-brand-yellow rounded-full shrink-0" /> Pour : {item.customName}
                             </div>
                           )}
                         </div>
                       ))}
                     </div>
 
-                    <div className="pt-2">
+                    <div>
                       {order.status === 'new' && (
-                        <button onClick={() => onUpdateStatus(order.id, 'preparing')} className="w-full bg-brand-yellow text-brand-green py-3.5 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-xl shadow-brand-yellow/20 hover:scale-[1.02] transition-all">Prise en charge</button>
+                        <button onClick={() => onUpdateStatus(order.id, 'preparing')} className="w-full bg-brand-yellow text-brand-green py-2 rounded-lg text-[8px] font-black uppercase tracking-widest shadow-lg shadow-brand-yellow/20 hover:scale-[1.02] transition-all">Prise en charge</button>
                       )}
                       {order.status === 'preparing' && (
-                        <button onClick={() => onUpdateStatus(order.id, 'delivering')} className="w-full bg-blue-500 text-white py-3.5 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-xl shadow-blue-500/20 hover:scale-[1.02] transition-all">Envoyer en livraison</button>
+                        <button onClick={() => handleSendDelivering(order.id)} className="w-full bg-blue-500 text-white py-2 rounded-lg text-[8px] font-black uppercase tracking-widest shadow-lg shadow-blue-500/20 hover:scale-[1.02] transition-all flex items-center justify-center gap-1">
+                          <Navigation size={9} /> Envoyer en livraison
+                        </button>
                       )}
                       {order.status === 'delivering' && (
-                        <button onClick={() => onUpdateStatus(order.id, 'completed',)} className="w-full bg-brand-green text-white py-3.5 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-xl shadow-brand-green/20 hover:scale-[1.02] transition-all">Marquer livré</button>
+                        <div className="space-y-1">
+                          <button onClick={() => handleMarkDelivered(order.id)} className="w-full bg-brand-green text-white py-2 rounded-lg text-[8px] font-black uppercase tracking-widest shadow-lg shadow-brand-green/20 hover:scale-[1.02] transition-all">Marquer livré</button>
+                          <div className="flex gap-1">
+                            <button onClick={() => handleWhatsApp(order)} className="flex-1 flex items-center justify-center gap-1 bg-[#25D366] text-white py-1.5 rounded-lg text-[7px] font-black uppercase tracking-widest hover:opacity-90 transition-all">
+                              <MessageCircle size={9} /> WhatsApp
+                            </button>
+                            <button onClick={() => handleCopy(order)} className="flex-1 flex items-center justify-center gap-1 bg-zinc-100 text-zinc-600 py-1.5 rounded-lg text-[7px] font-black uppercase tracking-widest hover:bg-zinc-200 transition-all">
+                              {copiedId === order.id ? <><Check size={9} className="text-brand-green" /> Copié</> : <><Copy size={9} /> Copier</>}
+                            </button>
+                          </div>
+                        </div>
                       )}
                     </div>
                   </motion.div>
                 ))}
               </motion.div>
+              </div>
             ) : activeTab === 'promos' ? (
               <motion.div 
                 key="promos-grid"

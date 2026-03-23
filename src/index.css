@@ -4,7 +4,7 @@
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Libre Baskerville", serif;
-  
+
   --color-brand-green: #1B5E20;
   --color-brand-yellow: #FFD700;
   --color-brand-red: #D32F2F;
@@ -13,10 +13,79 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    /* Empêche iOS Safari de grossir les polices en mode paysage */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    /* Supprime le flash bleu au tap sur iOS */
+    -webkit-tap-highlight-color: transparent;
+    /* Évite le scroll horizontal non voulu */
+    overflow-x: hidden;
+  }
+
+  /* Supprime le délai de 300ms sur tous les éléments interactifs (iOS/Android) */
+  button, a, [role="button"], input, select, textarea {
+    touch-action: manipulation;
+  }
+
+  /* Scroll fluide avec inertie sur iOS pour tous les containers scrollables */
+  .overflow-y-auto,
+  .overflow-auto,
+  .overflow-y-scroll {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+  }
+
+  /* Scrollbar fine et discrète sur desktop (Chrome / Edge / Safari) */
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #d4d4d8;
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #a1a1aa;
   }
 }
 
 @layer utilities {
+  /* Safe area — pour le notch iPhone / Dynamic Island / barre home Android */
+  .pt-safe {
+    padding-top: env(safe-area-inset-top);
+  }
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .pl-safe {
+    padding-left: env(safe-area-inset-left);
+  }
+  .pr-safe {
+    padding-right: env(safe-area-inset-right);
+  }
+  .px-safe {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+
+  /* Viewport dynamique : suit la barre Safari quand elle apparaît/disparaît */
+  .h-dvh {
+    height: 100dvh;
+  }
+  .min-h-dvh {
+    min-height: 100dvh;
+  }
+  .max-h-dvh {
+    max-height: 100dvh;
+  }
+
+  /* Fonds rayés (existants) */
   .bg-stripes {
     background-image: repeating-linear-gradient(
       45deg,
@@ -26,7 +95,7 @@
       #ffffff 40px
     );
   }
-  
+
   .bg-stripes-vertical {
     background-image: repeating-linear-gradient(
       to right,
