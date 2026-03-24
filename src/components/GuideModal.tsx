@@ -3,7 +3,7 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   X, Pizza, ChevronRight, Shield, Clock, Truck, Users, Package,
-  Tag, MessageCircle, MapPin, Star, Bell, Smartphone, Eye, Pencil,
+  Tag, MessageCircle, MapPin, Star, Bell, Smartphone, Eye, Pencil, Mail,
 } from 'lucide-react';
 
 interface GuideModalProps {
@@ -133,6 +133,19 @@ const sections = [
       'Fonctionne en plein écran, avec notifications et accès hors-ligne',
       'L\'app se met à jour automatiquement à chaque visite',
       'Les clients installent depuis Safari (iPhone) ou Chrome (Android)',
+    ],
+  },
+  {
+    icon: Mail,
+    title: 'Emails automatiques',
+    color: 'bg-cyan-500',
+    items: [
+      'Email de confirmation envoyé automatiquement à chaque nouvelle commande (si le client a renseigné son email)',
+      'Contenu : numéro de commande, liste des articles avec noms personnalisés, total, lien vers l\'espace client',
+      'Magic Link : le client reçoit un lien de connexion sécurisé (sans mot de passe) pour accéder à son historique',
+      'Service : Resend (SMTP) — 100 emails/jour gratuits, délivrabilité fiable',
+      'Les emails arrivent en moins de 30 secondes',
+      'Aucune action requise de votre part : tout est automatique via Supabase',
     ],
   },
   {
