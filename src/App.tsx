@@ -93,7 +93,7 @@ export default function App() {
           });
           
           // Notification système
-          if (Notification.permission === 'granted') {
+          if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
              new Notification('Nouvelle commande !', {
                body: `${newOrder.customer.name} vient de commander (${newOrder.total.toFixed(2)}€)`,
                icon: '/pizza-icon.png'
@@ -157,8 +157,8 @@ export default function App() {
       )
       .subscribe();
 
-    // Demander la permission pour les notifications
-    if (Notification.permission === 'default') {
+    // Demander la permission pour les notifications (non disponible sur iOS Safari hors PWA)
+    if (typeof Notification !== 'undefined' && Notification.permission === 'default') {
       Notification.requestPermission();
     }
 
