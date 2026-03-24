@@ -18,8 +18,8 @@ interface Attachment {
   type: 'image' | 'audio' | 'file';
 }
 
-const DEVELOPER_EMAIL = 'geoffroy.music@gmail.com';
-const DEVELOPER_WHATSAPP = '33650903587';
+const DEVELOPER_EMAIL = 'geoffroy.webtech@gmail.com';
+const DEVELOPER_WHATSAPP = '33695911384';
 
 const SupportModal: React.FC<SupportModalProps> = ({ isOpen, onClose }) => {
   const [message, setMessage] = useState('');
