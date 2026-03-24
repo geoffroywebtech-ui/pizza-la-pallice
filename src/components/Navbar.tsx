@@ -1,15 +1,16 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Pizza, Menu, X, User } from 'lucide-react';
+import { Pizza, Menu, X, User, HelpCircle } from 'lucide-react';
 
 interface NavbarProps {
   onOpenHistory: () => void;
   onLogoClick?: () => void;
+  onOpenGuide?: () => void;
 }
 
 
-const Navbar: React.FC<NavbarProps> = ({ onOpenHistory, onLogoClick }) => {
+const Navbar: React.FC<NavbarProps> = ({ onOpenHistory, onLogoClick, onOpenGuide }) => {
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -102,7 +103,14 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenHistory, onLogoClick }) => {
             </a>
           ))}
           <div className="h-6 w-px bg-current opacity-20 mx-2" />
-          <button 
+          <button
+            onClick={onOpenGuide}
+            className={`flex items-center gap-2 text-sm font-bold uppercase tracking-widest hover:text-brand-yellow transition-colors text-brand-green`}
+          >
+            <HelpCircle size={18} />
+            <span>Guide</span>
+          </button>
+          <button
             onClick={onOpenHistory}
             className={`flex items-center gap-2 text-sm font-bold uppercase tracking-widest hover:text-brand-yellow transition-colors text-brand-green`}
           >
@@ -144,7 +152,17 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenHistory, onLogoClick }) => {
                 {item}
               </a>
             ))}
-            <button 
+            <button
+              onClick={() => {
+                onOpenGuide?.();
+                setIsMobileMenuOpen(false);
+              }}
+              className="flex items-center gap-3 text-lg font-bold text-brand-green border-b border-zinc-100 pb-2"
+            >
+              <HelpCircle size={20} />
+              <span>Mode d'emploi</span>
+            </button>
+            <button
               onClick={() => {
                 onOpenHistory();
                 setIsMobileMenuOpen(false);

@@ -16,6 +16,7 @@ import CheckoutModal from './components/CheckoutModal';
 import RestaurantDashboard from './components/RestaurantDashboard';
 import CustomerHistoryModal from './components/CustomerHistoryModal';
 import DeliveryTrackerModal from './components/DeliveryTrackerModal';
+import GuideModal from './components/GuideModal';
 import { Promotion } from './types';
 import { supabase } from './lib/supabase';
 import { MENU_ITEMS } from './data/menu';
@@ -31,6 +32,7 @@ export default function App() {
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [currentUserEmail, setCurrentUserEmail] = useState<string | null>(null);
   const [trackingOrderId, setTrackingOrderId] = useState<string | null>(null);
+  const [isGuideOpen, setIsGuideOpen] = useState(false);
 
   const [promotions, setPromotions] = useState<Promotion[]>([
     { id: '1', code: 'PALLICE10', description: '10% sur votre première commande', discount: 0.1, active: true, type: 'percentage' },
@@ -331,9 +333,10 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-white font-sans selection:bg-brand-yellow selection:text-brand-green">
-      <Navbar 
-        onOpenHistory={() => setIsHistoryOpen(true)} 
+      <Navbar
+        onOpenHistory={() => setIsHistoryOpen(true)}
         onLogoClick={() => setIsAdminAuthOpen(true)}
+        onOpenGuide={() => setIsGuideOpen(true)}
       />
 
       
@@ -403,6 +406,11 @@ export default function App() {
         orders={orders}
         promotions={promotions}
         currentUserEmail={currentUserEmail}
+      />
+
+      <GuideModal
+        isOpen={isGuideOpen}
+        onClose={() => setIsGuideOpen(false)}
       />
 
       {trackingOrderId && (() => {
