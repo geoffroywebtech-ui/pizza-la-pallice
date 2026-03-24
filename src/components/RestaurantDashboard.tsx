@@ -1,7 +1,7 @@
 
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Pizza, X, Phone, MapPin, Plus, ShoppingBag, Clock, Navigation, MessageCircle, Copy, Check, Users, Search, Star, Mail, ChevronRight } from 'lucide-react';
+import { Pizza, X, Phone, MapPin, Plus, ShoppingBag, Clock, Navigation, MessageCircle, Copy, Check, Users, Search, Star, Mail, ChevronRight, BookOpen, Headphones } from 'lucide-react';
 import { Order, Promotion, MenuItem } from '../types';
 import { supabase } from '../lib/supabase';
 
@@ -13,6 +13,8 @@ interface RestaurantDashboardProps {
   onUpdatePromotions: (promos: Promotion[]) => void;
   onToggleAvailability: (id: string, isAvailable: boolean) => void;
   onExit: () => void;
+  onOpenGuide?: () => void;
+  onOpenSupport?: () => void;
 }
 
 interface ClientSummary {
@@ -36,7 +38,9 @@ const RestaurantDashboard: React.FC<RestaurantDashboardProps> = ({
   onUpdateStatus,
   onUpdatePromotions,
   onToggleAvailability,
-  onExit
+  onExit,
+  onOpenGuide,
+  onOpenSupport
 }) => {
   const [activeTab, setActiveTab] = useState<'orders' | 'promos' | 'inventory' | 'clients'>('orders');
   const [filter, setFilter] = useState<'all' | Order['status']>('all');
@@ -246,12 +250,28 @@ const RestaurantDashboard: React.FC<RestaurantDashboardProps> = ({
           ))}
         </div>
 
-        <button
-          onClick={onExit}
-          className="bg-zinc-900 text-white px-6 py-3 rounded-xl text-sm font-bold flex items-center gap-2 hover:bg-zinc-800 transition-all shadow-lg shadow-zinc-900/10"
-        >
-          <X size={18} /> Quitter
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={onOpenGuide}
+            className="w-10 h-10 rounded-xl bg-zinc-100 border border-zinc-200 flex items-center justify-center text-zinc-500 hover:text-brand-green hover:border-brand-green/30 transition-all"
+            title="Mode d'emploi"
+          >
+            <BookOpen size={18} />
+          </button>
+          <button
+            onClick={onOpenSupport}
+            className="w-10 h-10 rounded-xl bg-zinc-100 border border-zinc-200 flex items-center justify-center text-zinc-500 hover:text-purple-600 hover:border-purple-200 transition-all"
+            title="Support technique"
+          >
+            <Headphones size={18} />
+          </button>
+          <button
+            onClick={onExit}
+            className="bg-zinc-900 text-white px-6 py-3 rounded-xl text-sm font-bold flex items-center gap-2 hover:bg-zinc-800 transition-all shadow-lg shadow-zinc-900/10"
+          >
+            <X size={18} /> Quitter
+          </button>
+        </div>
       </div>
 
       <div className="flex-1 overflow-hidden flex flex-col lg:flex-row gap-3 p-3">

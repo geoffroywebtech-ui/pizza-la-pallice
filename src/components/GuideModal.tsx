@@ -1,135 +1,151 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ShoppingBag, CreditCard, MapPin, Clock, Star, Smartphone, ChevronRight, Gift, User, Pizza, Truck, MessageCircle, Bell, Pencil, Navigation } from 'lucide-react';
+import {
+  X, Pizza, ChevronRight, Shield, Clock, Truck, Users, Package,
+  Tag, MessageCircle, MapPin, Star, Bell, Smartphone, Eye, Pencil,
+} from 'lucide-react';
 
 interface GuideModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const steps = [
+const sections = [
   {
-    icon: ShoppingBag,
-    title: 'Choisir vos pizzas',
+    icon: Shield,
+    title: 'Accéder au Dashboard',
     color: 'bg-brand-green',
     items: [
-      'Parcourez la carte en faisant défiler la page',
-      'Filtrez par catégorie : Sauce Tomate, Sauce Crème, Paninis, Lasagnes, Desserts, Boissons',
-      'Appuyez sur "Ajouter" sur le produit souhaité',
-      'Choisissez la taille : T1 (petite), T2 (moyenne) ou T3 (grande)',
-      'Les produits en rupture affichent un bandeau "Rupture" et ne sont pas commandables',
-      'Le badge "SÉLECTION" indique les produits recommandés par le chef',
+      'Appui long (1 seconde) sur le logo "La Pallice Pizza" → le cadenas s\'affiche',
+      'Entrer le code d\'accès cuisine pour ouvrir le tableau de bord',
+      'Pour revenir à la vue client : bouton "Quitter" en haut à droite',
     ],
   },
   {
-    icon: Pencil,
-    title: 'Personnaliser : nom sur la pizza',
-    color: 'bg-indigo-500',
+    icon: Eye,
+    title: 'Onglet Commandes',
+    color: 'bg-blue-500',
     items: [
-      'Lors de l\'ajout au panier, un champ "Pour qui ?" apparaît',
-      'Inscrivez un prénom (ex : "Pour : Tom") — utile quand on commande pour plusieurs personnes',
-      'Ce nom apparaît sur le récapitulatif de commande et en cuisine',
-      'Le champ est facultatif : laissez-le vide si vous commandez pour vous seul',
-    ],
-  },
-  {
-    icon: CreditCard,
-    title: 'Valider la commande',
-    color: 'bg-brand-yellow',
-    items: [
-      'Appuyez sur le bouton panier flottant (en bas à droite) pour voir votre sélection',
-      'Vérifiez les articles, les noms personnalisés et les quantités (+/−)',
-      'Appuyez sur "Commander" pour accéder au formulaire',
-      'Remplissez : nom, téléphone, email et adresse (si livraison)',
-      'Bouton "Ma position" : remplissage automatique de l\'adresse par GPS',
-      'Appliquez un code promo si vous en avez un (voir liste en bas)',
-      'Confirmez — votre commande est envoyée instantanément en cuisine !',
+      'Toutes les commandes apparaissent en temps réel (max 20 visibles sans défiler)',
+      'Filtres rapides : Toutes / Nouvelles / En préparation / En livraison / Terminées',
+      'Le badge rouge sur "Nouvelles" clignote quand il y a des commandes non vues',
+      'Un son de notification retentit à chaque nouvelle commande reçue',
     ],
   },
   {
     icon: Clock,
-    title: 'Suivi en temps réel & compteur d\'attente',
-    color: 'bg-blue-500',
+    title: 'Chronomètre de commande',
+    color: 'bg-amber-500',
     items: [
-      'Dès validation, votre commande passe par 4 étapes : Reçue → En préparation → En livraison → Terminée',
-      'Un compteur affiche le temps écoulé depuis la prise de commande',
-      'Vert : moins de 5 min — Jaune : 5 à 10 min — Rouge clignotant : plus de 10 min',
-      'Ce compteur vous informe du délai avant la livraison ou le retrait',
+      'Chaque commande affiche le temps écoulé depuis la prise de commande',
+      'Vert : moins de 5 minutes — tout va bien',
+      'Jaune : entre 5 et 10 minutes — attention',
+      'Rouge clignotant : plus de 10 minutes — la commande prend du retard',
+      'Le chronomètre se met à jour toutes les 10 secondes',
     ],
   },
   {
     icon: Truck,
-    title: 'Livraison : suivre le livreur',
+    title: 'Gérer le statut & la livraison',
     color: 'bg-emerald-500',
     items: [
-      'Quand votre commande passe "En livraison", vous recevez un lien de suivi par WhatsApp ou SMS',
-      'Cliquez dessus pour ouvrir la carte en direct',
-      'Le point vert = le livreur, le point jaune = votre adresse',
-      'La distance restante s\'affiche en temps réel (km ou mètres)',
-      'La carte se recentre automatiquement quand le livreur se déplace',
+      'Cliquer sur le bouton de statut pour faire passer la commande à l\'étape suivante',
+      'Workflow : Nouvelle → En préparation → En livraison → Terminée',
+      'Quand on passe en "En livraison", le GPS du livreur s\'active automatiquement',
+      'Le client peut suivre le livreur en temps réel sur la carte',
+      'Quand la commande est "Terminée", le GPS s\'arrête automatiquement',
     ],
   },
   {
-    icon: User,
-    title: 'Mon Espace (sans passer commande)',
-    color: 'bg-purple-500',
+    icon: MessageCircle,
+    title: 'Envoyer le lien de suivi',
+    color: 'bg-green-500',
     items: [
-      'Appuyez sur "Mon Espace" dans le menu (icône personnage)',
-      'Entrez votre email → appuyez sur "Recevoir le lien"',
-      'Vérifiez votre boîte mail → cliquez sur le lien magique reçu',
-      'Pas besoin de mot de passe : un lien unique et sécurisé suffit',
-      'Votre espace s\'ouvre automatiquement avec votre historique',
-      'Fonctionne même si vous n\'avez jamais passé de commande',
+      'Bouton WhatsApp : envoie un message pré-rempli au client avec le lien de suivi',
+      'Bouton Copier : copie le message de suivi dans le presse-papier',
+      'Le numéro du client est converti automatiquement au format international (06 → +33)',
+      'Message envoyé : "Votre commande est en route ! Suivez votre livreur..."',
     ],
   },
   {
-    icon: Gift,
-    title: 'Programme de Fidélité',
-    color: 'bg-brand-red',
-    items: [
-      'Chaque pizza achetée = 1 point de fidélité (cumulé automatiquement)',
-      '10 points = 1 pizza offerte ! (badge "🎁" affiché)',
-      'Barre de progression visible dans "Mon Espace"',
-      'Seules les commandes terminées comptent pour les points',
-      'Les points ne se perdent jamais — ils s\'accumulent commande après commande',
-    ],
-  },
-  {
-    icon: Bell,
-    title: 'Notifications & alertes',
+    icon: Package,
+    title: 'Onglet Stock',
     color: 'bg-orange-500',
     items: [
-      'Autorisez les notifications pour être prévenu de l\'avancement de votre commande',
-      'Sur iPhone (PWA installée) : les notifications s\'affichent comme une appli native',
-      'Le son de notification vous alerte même si l\'app est en arrière-plan',
+      'Activer/désactiver la disponibilité de chaque produit en un clic',
+      'Un produit désactivé affiche "Rupture" sur la carte client et ne peut plus être commandé',
+      'Les changements de stock se propagent en temps réel à tous les clients connectés',
+      'Utile en fin de soirée quand un ingrédient est épuisé',
+    ],
+  },
+  {
+    icon: Tag,
+    title: 'Onglet Promotions',
+    color: 'bg-purple-500',
+    items: [
+      'Créer et gérer les codes promo (pourcentage ou montant fixe)',
+      'Activer/désactiver un code sans le supprimer',
+      'Codes actuels : PALLICE10 (10%) et PIZZA20 (5€)',
+      'Le client applique le code au moment du paiement',
+    ],
+  },
+  {
+    icon: Users,
+    title: 'Onglet Clients',
+    color: 'bg-indigo-500',
+    items: [
+      'Liste de tous les clients avec recherche par nom, téléphone ou email',
+      'Fiche client : nombre de commandes, montant total dépensé, points fidélité',
+      'Historique détaillé des commandes de chaque client',
+      'Points fidélité : 1 pizza = 1 point, 10 points = 1 pizza offerte',
+      'Les adresses et emails sont agrégés automatiquement depuis les commandes',
+    ],
+  },
+  {
+    icon: Pencil,
+    title: 'Nom personnalisé sur les pizzas',
+    color: 'bg-pink-500',
+    items: [
+      'Le client peut écrire un prénom sur chaque pizza (champ "Pour qui ?")',
+      'Le nom apparaît dans le récapitulatif et sur le ticket en cuisine',
+      'Pratique quand un client commande pour plusieurs personnes',
+      'Champ facultatif — n\'apparaît que si rempli',
+    ],
+  },
+  {
+    icon: Star,
+    title: 'Fidélité & Magic Link',
+    color: 'bg-brand-yellow',
+    items: [
+      'Le client accède à son espace via "Mon Espace" → email → lien magique (sans mot de passe)',
+      'Il voit son historique de commandes et ses points de fidélité',
+      'Aucune action requise de votre part : tout est automatique',
+      'Le client peut consulter son espace même sans passer de commande',
     ],
   },
   {
     icon: Smartphone,
-    title: 'Installer l\'appli (recommandé)',
+    title: 'Application mobile (PWA)',
     color: 'bg-zinc-700',
     items: [
-      'iPhone : Safari → bouton Partage (carré ↑) → "Sur l\'écran d\'accueil"',
-      'Android : Chrome → menu ⋮ → "Installer l\'application"',
-      'L\'icône Pizza La Pallice apparaît sur votre écran d\'accueil',
-      'Avantages : plein écran, accès rapide, notifications, fonctionne hors-ligne',
-      'L\'app se met à jour automatiquement — rien à faire',
+      'L\'app peut être installée sur iPhone et Android comme une vraie application',
+      'Fonctionne en plein écran, avec notifications et accès hors-ligne',
+      'L\'app se met à jour automatiquement à chaque visite',
+      'Les clients installent depuis Safari (iPhone) ou Chrome (Android)',
     ],
   },
-];
-
-const promos = [
-  { code: 'PALLICE10', desc: '10% sur la première commande' },
-  { code: 'PIZZA20', desc: '5€ de réduction sur les pizzas larges' },
-];
-
-const tips = [
-  'Le bouton panier flottant affiche le nombre d\'articles et le total en temps réel',
-  'Vous pouvez commander pour plusieurs personnes en personnalisant chaque pizza avec un prénom',
-  'Pas besoin de créer de compte : l\'email + lien magique suffisent',
-  'L\'app fonctionne sur tous les navigateurs : Safari, Chrome, Firefox, Brave',
-  'Sur place ou en livraison — l\'application s\'adapte à votre choix',
+  {
+    icon: MapPin,
+    title: 'Géolocalisation & carte',
+    color: 'bg-teal-500',
+    items: [
+      'Le client peut remplir son adresse automatiquement via GPS (bouton "Ma position")',
+      'La carte de suivi utilise OpenStreetMap (gratuit, sans licence)',
+      'Le livreur est représenté par un point vert, le client par un point jaune',
+      'La distance restante s\'affiche en km ou mètres en temps réel',
+    ],
+  },
 ];
 
 const GuideModal: React.FC<GuideModalProps> = ({ isOpen, onClose }) => {
@@ -149,22 +165,22 @@ const GuideModal: React.FC<GuideModalProps> = ({ isOpen, onClose }) => {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: '100%', opacity: 0 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="relative w-full sm:max-w-lg max-h-[92dvh] bg-white rounded-t-3xl sm:rounded-3xl overflow-hidden flex flex-col"
+            className="relative w-full sm:max-w-xl max-h-[92dvh] bg-white rounded-t-3xl sm:rounded-3xl overflow-hidden flex flex-col"
           >
             {/* Header */}
-            <div className="flex-shrink-0 bg-brand-green p-6 pb-5 text-white">
+            <div className="flex-shrink-0 bg-zinc-900 p-6 pb-5 text-white">
               <div className="flex justify-between items-start">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <Pizza size={22} />
-                    <span className="text-xs font-bold uppercase tracking-widest opacity-80">Pizza La Pallice</span>
+                    <Pizza size={22} className="text-brand-yellow" />
+                    <span className="text-xs font-bold uppercase tracking-widest text-zinc-400">Documentation Admin</span>
                   </div>
                   <h2 className="text-2xl font-serif font-black">Mode d'emploi</h2>
-                  <p className="text-sm opacity-80 mt-1">Tout savoir pour commander comme un pro</p>
+                  <p className="text-sm text-zinc-400 mt-1">Guide complet du tableau de bord</p>
                 </div>
                 <button
                   onClick={onClose}
-                  className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/30 transition-colors"
+                  className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
                 >
                   <X size={18} />
                 </button>
@@ -172,69 +188,32 @@ const GuideModal: React.FC<GuideModalProps> = ({ isOpen, onClose }) => {
             </div>
 
             {/* Content */}
-            <div className="flex-1 overflow-y-auto overscroll-contain p-5 space-y-5"
+            <div
+              className="flex-1 overflow-y-auto overscroll-contain p-5 space-y-4"
               style={{ paddingBottom: 'max(1.5rem, env(safe-area-inset-bottom))' }}
             >
-              {steps.map((step, i) => (
-                <div key={i} className="rounded-2xl border border-zinc-100 overflow-hidden">
-                  <div className="flex items-center gap-3 px-4 py-3 bg-zinc-50">
-                    <div className={`w-8 h-8 rounded-lg ${step.color} text-white flex items-center justify-center flex-shrink-0`}>
-                      <step.icon size={16} />
+              {sections.map((sec, i) => (
+                <details key={i} className="group rounded-2xl border border-zinc-100 overflow-hidden">
+                  <summary className="flex items-center gap-3 px-4 py-3 bg-zinc-50 cursor-pointer select-none list-none [&::-webkit-details-marker]:hidden">
+                    <div className={`w-8 h-8 rounded-lg ${sec.color} text-white flex items-center justify-center flex-shrink-0`}>
+                      <sec.icon size={16} />
                     </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Étape {i + 1}</span>
-                      <ChevronRight size={12} className="text-zinc-300" />
-                      <span className="text-sm font-bold text-zinc-800">{step.title}</span>
-                    </div>
-                  </div>
-                  <ul className="px-4 py-3 space-y-2">
-                    {step.items.map((item, j) => (
+                    <span className="text-sm font-bold text-zinc-800 flex-1">{sec.title}</span>
+                    <ChevronRight size={14} className="text-zinc-400 transition-transform group-open:rotate-90" />
+                  </summary>
+                  <ul className="px-4 py-3 space-y-2 border-t border-zinc-100">
+                    {sec.items.map((item, j) => (
                       <li key={j} className="flex items-start gap-2 text-sm text-zinc-600">
                         <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-brand-green/40 flex-shrink-0" />
                         {item}
                       </li>
                     ))}
                   </ul>
-                </div>
+                </details>
               ))}
 
-              {/* Codes promo */}
-              <div className="rounded-2xl border border-brand-yellow/30 bg-brand-yellow/5 p-4">
-                <h3 className="text-sm font-bold text-zinc-800 mb-3 flex items-center gap-2">
-                  <Star size={16} className="text-brand-yellow" />
-                  Codes promo disponibles
-                </h3>
-                <div className="space-y-2">
-                  {promos.map((p) => (
-                    <div key={p.code} className="flex items-center gap-3">
-                      <span className="px-2.5 py-1 rounded-lg bg-brand-green text-white text-xs font-black tracking-wider">
-                        {p.code}
-                      </span>
-                      <span className="text-sm text-zinc-600">{p.desc}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Astuces */}
-              <div className="rounded-2xl border border-brand-green/20 bg-brand-green/5 p-4">
-                <h3 className="text-sm font-bold text-zinc-800 mb-3 flex items-center gap-2">
-                  <Navigation size={16} className="text-brand-green" />
-                  Bon à savoir
-                </h3>
-                <ul className="space-y-2">
-                  {tips.map((tip, i) => (
-                    <li key={i} className="flex items-start gap-2 text-sm text-zinc-600">
-                      <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-brand-green flex-shrink-0" />
-                      {tip}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Note finale */}
               <p className="text-center text-xs text-zinc-400 pt-2 pb-2">
-                Besoin d'aide ? Appelez-nous directement ou passez en boutique.
+                Pizza La Pallice — Documentation interne v1.0
               </p>
             </div>
           </motion.div>

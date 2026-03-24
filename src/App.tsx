@@ -17,6 +17,7 @@ import RestaurantDashboard from './components/RestaurantDashboard';
 import CustomerHistoryModal from './components/CustomerHistoryModal';
 import DeliveryTrackerModal from './components/DeliveryTrackerModal';
 import GuideModal from './components/GuideModal';
+import SupportModal from './components/SupportModal';
 import { Promotion } from './types';
 import { supabase } from './lib/supabase';
 import { MENU_ITEMS } from './data/menu';
@@ -33,6 +34,7 @@ export default function App() {
   const [currentUserEmail, setCurrentUserEmail] = useState<string | null>(null);
   const [trackingOrderId, setTrackingOrderId] = useState<string | null>(null);
   const [isGuideOpen, setIsGuideOpen] = useState(false);
+  const [isSupportOpen, setIsSupportOpen] = useState(false);
 
   const [promotions, setPromotions] = useState<Promotion[]>([
     { id: '1', code: 'PALLICE10', description: '10% sur votre première commande', discount: 0.1, active: true, type: 'percentage' },
@@ -307,14 +309,16 @@ export default function App() {
 
   if (isAdminView) return (
 
-    <RestaurantDashboard 
-      orders={orders} 
+    <RestaurantDashboard
+      orders={orders}
       promotions={promotions}
       menuItems={menuItems}
-      onUpdateStatus={updateOrderStatus} 
+      onUpdateStatus={updateOrderStatus}
       onUpdatePromotions={setPromotions}
       onToggleAvailability={toggleItemAvailability}
-      onExit={() => setIsAdminView(false)} 
+      onExit={() => setIsAdminView(false)}
+      onOpenGuide={() => setIsGuideOpen(true)}
+      onOpenSupport={() => setIsSupportOpen(true)}
     />
 
   );
@@ -336,7 +340,6 @@ export default function App() {
       <Navbar
         onOpenHistory={() => setIsHistoryOpen(true)}
         onLogoClick={() => setIsAdminAuthOpen(true)}
-        onOpenGuide={() => setIsGuideOpen(true)}
       />
 
       
@@ -411,6 +414,11 @@ export default function App() {
       <GuideModal
         isOpen={isGuideOpen}
         onClose={() => setIsGuideOpen(false)}
+      />
+
+      <SupportModal
+        isOpen={isSupportOpen}
+        onClose={() => setIsSupportOpen(false)}
       />
 
       {trackingOrderId && (() => {
