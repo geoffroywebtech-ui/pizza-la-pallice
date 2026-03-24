@@ -308,19 +308,21 @@ export default function App() {
   };
 
   if (isAdminView) return (
-
-    <RestaurantDashboard
-      orders={orders}
-      promotions={promotions}
-      menuItems={menuItems}
-      onUpdateStatus={updateOrderStatus}
-      onUpdatePromotions={setPromotions}
-      onToggleAvailability={toggleItemAvailability}
-      onExit={() => setIsAdminView(false)}
-      onOpenGuide={() => setIsGuideOpen(true)}
-      onOpenSupport={() => setIsSupportOpen(true)}
-    />
-
+    <>
+      <RestaurantDashboard
+        orders={orders}
+        promotions={promotions}
+        menuItems={menuItems}
+        onUpdateStatus={updateOrderStatus}
+        onUpdatePromotions={setPromotions}
+        onToggleAvailability={toggleItemAvailability}
+        onExit={() => setIsAdminView(false)}
+        onOpenGuide={() => setIsGuideOpen(true)}
+        onOpenSupport={() => setIsSupportOpen(true)}
+      />
+      <GuideModal isOpen={isGuideOpen} onClose={() => setIsGuideOpen(false)} />
+      <SupportModal isOpen={isSupportOpen} onClose={() => setIsSupportOpen(false)} />
+    </>
   );
 
   const handleAdminAuth = () => {
