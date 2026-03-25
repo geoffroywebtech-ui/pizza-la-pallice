@@ -47,37 +47,27 @@ const SupportModal: React.FC<SupportModalProps> = ({ isOpen, onClose }) => {
     }
   }, [isOpen]);
 
-  // ── Screenshot via capture d'écran système ──
-  const captureScreen = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
-      const track = stream.getVideoTracks()[0];
-      const imageCapture = new (window as any).ImageCapture(track);
-      const bitmap = await imageCapture.grabFrame();
-      track.stop();
-
-      const canvas = document.createElement('canvas');
-      canvas.width = bitmap.width;
-      canvas.height = bitmap.height;
-      const ctx = canvas.getContext('2d')!;
-      ctx.drawImage(bitmap, 0, 0);
-
-      canvas.toBlob((blob) => {
-        if (!blob) return;
-        const file = new File([blob], `screenshot-${Date.now()}.png`, { type: 'image/png' });
-        addAttachment(file, 'image');
-      }, 'image/png');
-    } catch {
-      // Fallback: ouvrir le sélecteur de fichier image
-      cameraInputRef.current?.click();
-    }
+  // ── Photo / capture d'écran ──
+  const captureScreen = () => {
+    // Ouvre directement le sélecteur photo/fichier (fonctionne sur tous les appareils)
+    cameraInputRef.current?.click();
   };
 
   // ── Enregistrement audio ──
+  const getSupportedMimeType = () => {
+    const types = ['audio/webm', 'audio/mp4', 'audio/ogg', 'audio/wav', ''];
+    for (const type of types) {
+      if (type === '' || MediaRecorder.isTypeSupported(type)) return type;
+    }
+    return '';
+  };
+
   const startRecording = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const mediaRecorder = new MediaRecorder(stream);
+      const mimeType = getSupportedMimeType();
+      const options = mimeType ? { mimeType } : undefined;
+      const mediaRecorder = new MediaRecorder(stream, options);
       mediaRecorderRef.current = mediaRecorder;
       audioChunksRef.current = [];
 
@@ -86,8 +76,10 @@ const SupportModal: React.FC<SupportModalProps> = ({ isOpen, onClose }) => {
       };
 
       mediaRecorder.onstop = () => {
-        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
-        const file = new File([audioBlob], `audio-${Date.now()}.webm`, { type: 'audio/webm' });
+        const type = mediaRecorder.mimeType || 'audio/webm';
+        const ext = type.includes('mp4') ? 'mp4' : type.includes('ogg') ? 'ogg' : type.includes('wav') ? 'wav' : 'webm';
+        const audioBlob = new Blob(audioChunksRef.current, { type });
+        const file = new File([audioBlob], `audio-${Date.now()}.${ext}`, { type });
         addAttachment(file, 'audio');
         stream.getTracks().forEach((t) => t.stop());
       };
@@ -182,16 +174,7 @@ const SupportModal: React.FC<SupportModalProps> = ({ isOpen, onClose }) => {
   };
 
   const sendViaEmail = () => {
-    const subject = encodeURIComponent('[Support] Pizza La Pallice — Demande de modification');
-    const body = encodeURIComponent(
-      `${message}\n\n---\n${
-        attachments.length > 0
-          ? `${attachments.length} fichier(s) à joindre à cet email (téléchargés sur votre appareil).`
-          : ''
-      }\nEnvoyé depuis le Dashboard Admin — Pizza La Pallice`
-    );
-    window.open(`mailto:${DEVELOPER_EMAIL}?subject=${subject}&body=${body}`, '_blank');
-
+    // Télécharger les fichiers d'abord pour que l'utilisateur puisse les joindre
     if (attachments.length > 0) {
       attachments.forEach((att) => {
         const url = URL.createObjectURL(att.file);
@@ -202,6 +185,17 @@ const SupportModal: React.FC<SupportModalProps> = ({ isOpen, onClose }) => {
         URL.revokeObjectURL(url);
       });
     }
+
+    const subject = encodeURIComponent('[Support] Pizza La Pallice — Demande de modification');
+    const body = encodeURIComponent(
+      `${message}\n\n---\n${
+        attachments.length > 0
+          ? `${attachments.length} fichier(s) téléchargé(s) sur votre appareil — joignez-les à cet email.`
+          : ''
+      }\nEnvoyé depuis le Dashboard Admin — Pizza La Pallice`
+    );
+    // location.href évite le blocage popup (contrairement à window.open)
+    window.location.href = `mailto:${DEVELOPER_EMAIL}?subject=${subject}&body=${body}`;
     setSent(true);
   };
 
@@ -313,13 +307,13 @@ const SupportModal: React.FC<SupportModalProps> = ({ isOpen, onClose }) => {
 
                   {/* ── Boutons d'action ── */}
                   <div className="flex flex-wrap gap-2">
-                    {/* Capture d'écran */}
+                    {/* Photo / capture */}
                     <button
                       onClick={captureScreen}
                       className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-50 text-blue-600 text-xs font-bold border border-blue-100 hover:bg-blue-100 transition-colors"
                     >
                       <Camera size={16} />
-                      Capture d'écran
+                      Photo / Screenshot
                     </button>
 
                     {/* Enregistrement audio */}
@@ -364,7 +358,6 @@ const SupportModal: React.FC<SupportModalProps> = ({ isOpen, onClose }) => {
                     ref={cameraInputRef}
                     type="file"
                     accept="image/*"
-                    capture="environment"
                     onChange={handleCameraChange}
                     className="hidden"
                   />
